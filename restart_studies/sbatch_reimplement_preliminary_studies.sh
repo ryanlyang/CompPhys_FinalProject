@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=prelimReimpl
-#SBATCH --partition=debug
+#SBATCH --partition=tier3
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=96G
-#SBATCH --time=1-00:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH --output=restart_studies/logs/prelim_reimpl_%j.out
 #SBATCH --error=restart_studies/logs/prelim_reimpl_%j.err
 
@@ -22,15 +22,15 @@ set -euo pipefail
 # - single seed
 # -----------------------------------------------------------------------------
 
-PROJECT_ROOT="${PROJECT_ROOT:-/home/ryan/Documents/School/CompPhys/new_final_project}"
-SCRIPT_PATH="${SCRIPT_PATH:-${PROJECT_ROOT}/restart_studies/reimplement_preliminary_studies.py}"
+WORKDIR="${SLURM_SUBMIT_DIR:-$(pwd)}"
 
-DATA_DIR="${DATA_DIR:-/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/data/jetclass_part0}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${PROJECT_ROOT}/restart_studies/results}"
+# New canonical repo location on research compute
+PROJECT_ROOT="${PROJECT_ROOT:-/home/ryreu/atlas/CompPhys_FinalProject}"
+
+# Model/training defaults (single-seed full run)
 RUN_NAME="${RUN_NAME:-prelim_reimpl_seed52_cluster}"
 SEED="${SEED:-52}"
 
-# Model/training defaults (single-seed "real resource" run)
 FEATURE_MODE="${FEATURE_MODE:-full}"
 MAX_CONSTITS="${MAX_CONSTITS:-128}"
 N_TRAIN_JETS="${N_TRAIN_JETS:-150000}"
@@ -52,10 +52,8 @@ DROPOUT="${DROPOUT:-0.1}"
 TARGET_CLASS="${TARGET_CLASS:-HToBB}"
 BACKGROUND_CLASS="${BACKGROUND_CLASS:-ZJetsToNuNu}"
 
-# Corruption suite from preliminary design
 CORRUPTIONS="${CORRUPTIONS:-pt_noise:0.03,pt_noise:0.06,eta_phi_jitter:0.02,eta_phi_jitter:0.05,dropout:0.05,dropout:0.10,merge:0.10,merge:0.20,global_scale:0.03}"
 
-# Interpretability benchmark knobs
 EXPLAIN_SUBSET_SIZE="${EXPLAIN_SUBSET_SIZE:-20000}"
 EXPLAIN_BATCH_SIZE="${EXPLAIN_BATCH_SIZE:-128}"
 MASK_FRACS="${MASK_FRACS:-0.02,0.05,0.10,0.20}"
@@ -64,37 +62,97 @@ SMOOTHGRAD_SAMPLES="${SMOOTHGRAD_SAMPLES:-16}"
 SMOOTHGRAD_SIGMA="${SMOOTHGRAD_SIGMA:-0.10}"
 RANDOM_MASK_REPEATS="${RANDOM_MASK_REPEATS:-3}"
 
-# Runtime
 DEVICE="${DEVICE:-cuda}"
 NUM_WORKERS="${NUM_WORKERS:-8}"
 SHUFFLE_FILES="${SHUFFLE_FILES:-0}"
 
-# Conda activation (override as needed)
-CONDA_SH="${CONDA_SH:-$HOME/miniforge3/etc/profile.d/conda.sh}"
-CONDA_ENV="${CONDA_ENV:-atlas_kd}"
-
-mkdir -p "${PROJECT_ROOT}/restart_studies/logs"
-
-cd "${PROJECT_ROOT}"
-
-if [[ -f "${CONDA_SH}" ]]; then
-  # shellcheck disable=SC1090
-  source "${CONDA_SH}"
-else
-  echo "[preflight] WARNING: conda.sh not found at ${CONDA_SH}. Using current shell Python."
-fi
-
-if command -v conda >/dev/null 2>&1; then
-  if conda env list | awk '{print $1}' | grep -qx "${CONDA_ENV}"; then
-    conda activate "${CONDA_ENV}"
-  else
-    echo "[preflight] WARNING: conda env '${CONDA_ENV}' not found."
-    echo "[preflight] Falling back to 'base' if available."
-    if conda env list | awk '{print $1}' | grep -qx "base"; then
-      conda activate base
-    fi
+# -----------------------------------------------------------------------------
+# Resolve script path with jetclass_transformer-style candidate logic
+# -----------------------------------------------------------------------------
+SCRIPT_CANDIDATES=(
+  "${WORKDIR}/restart_studies/reimplement_preliminary_studies.py"
+  "${PROJECT_ROOT}/restart_studies/reimplement_preliminary_studies.py"
+  "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/reimplement_preliminary_studies.py"
+  "/home/ryan/Documents/School/CompPhys/new_final_project/restart_studies/reimplement_preliminary_studies.py"
+)
+SCRIPT_PATH=""
+for c in "${SCRIPT_CANDIDATES[@]}"; do
+  if [[ -f "${c}" ]]; then
+    SCRIPT_PATH="${c}"
+    break
   fi
+done
+
+if [[ -z "${SCRIPT_PATH}" ]]; then
+  echo "ERROR: reimplement_preliminary_studies.py not found." >&2
+  echo "Checked: ${SCRIPT_CANDIDATES[*]}" >&2
+  exit 2
 fi
+
+# Infer project root from script location when possible
+PROJECT_ROOT_RESOLVED="$(cd "$(dirname "${SCRIPT_PATH}")/.." && pwd)"
+OUTPUT_ROOT="${OUTPUT_ROOT:-${PROJECT_ROOT_RESOLVED}/restart_studies/results}"
+
+# -----------------------------------------------------------------------------
+# Resolve data path with cluster-aware candidate logic
+# -----------------------------------------------------------------------------
+if [[ -n "${DATA_DIR:-}" ]]; then
+  DATA_CANDIDATES=(
+    "${DATA_DIR}"
+    "/home/ryreu/atlas/PracticeTagging/data/jetclass_part0"
+    "/home/ryreu/atlas/ATLAS-top-tagging-open-data/data/jetclass_part0"
+    "/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/data/jetclass_part0"
+  )
+else
+  DATA_CANDIDATES=(
+    "/home/ryreu/atlas/PracticeTagging/data/jetclass_part0"
+    "/home/ryreu/atlas/ATLAS-top-tagging-open-data/data/jetclass_part0"
+    "/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/data/jetclass_part0"
+  )
+fi
+
+DATA_DIR_RESOLVED=""
+for d in "${DATA_CANDIDATES[@]}"; do
+  if [[ -d "${d}" ]]; then
+    DATA_DIR_RESOLVED="${d}"
+    break
+  fi
+done
+
+if [[ -z "${DATA_DIR_RESOLVED}" ]]; then
+  echo "ERROR: jetclass_part0 data directory not found." >&2
+  echo "Checked: ${DATA_CANDIDATES[*]}" >&2
+  exit 2
+fi
+
+# -----------------------------------------------------------------------------
+# Conda activation (use research-compute defaults first)
+# -----------------------------------------------------------------------------
+CONDA_ENV="${CONDA_ENV:-atlas_kd}"
+CONDA_SH_CANDIDATES=(
+  "${CONDA_SH:-}"
+  "/home/ryreu/miniconda3/etc/profile.d/conda.sh"
+  "$HOME/miniforge3/etc/profile.d/conda.sh"
+  "$HOME/miniconda3/etc/profile.d/conda.sh"
+)
+CONDA_SH_RESOLVED=""
+for c in "${CONDA_SH_CANDIDATES[@]}"; do
+  if [[ -n "${c}" && -f "${c}" ]]; then
+    CONDA_SH_RESOLVED="${c}"
+    break
+  fi
+done
+
+if [[ -n "${CONDA_SH_RESOLVED}" ]]; then
+  # shellcheck disable=SC1090
+  source "${CONDA_SH_RESOLVED}"
+  conda activate "${CONDA_ENV}"
+else
+  echo "[preflight] WARNING: no conda.sh found; using current shell Python." >&2
+fi
+
+cd "${WORKDIR}"
+mkdir -p "${PROJECT_ROOT_RESOLVED}/restart_studies/logs"
 
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
@@ -104,8 +162,14 @@ export OPENBLAS_NUM_THREADS=1
 export NUMEXPR_NUM_THREADS=1
 export MPLBACKEND=Agg
 export PYTHONHASHSEED="${SEED}"
+export PYTHONWARNINGS="ignore"
 
+echo "[preflight] WORKDIR=${WORKDIR}"
+echo "[preflight] PROJECT_ROOT=${PROJECT_ROOT_RESOLVED}"
+echo "[preflight] SCRIPT=${SCRIPT_PATH}"
+echo "[preflight] DATA_DIR=${DATA_DIR_RESOLVED}"
 echo "[preflight] python: $(command -v "${PYTHON_BIN}" || true)"
+
 "${PYTHON_BIN}" - << 'PY'
 import importlib.util as iu
 mods = ["torch", "numpy", "sklearn", "scipy", "uproot", "awkward", "tqdm"]
@@ -115,18 +179,9 @@ if missing:
 print("[preflight] module check OK")
 PY
 
-if [[ ! -f "${SCRIPT_PATH}" ]]; then
-  echo "[preflight] ERROR: script not found: ${SCRIPT_PATH}" >&2
-  exit 2
-fi
-if [[ ! -d "${DATA_DIR}" ]]; then
-  echo "[preflight] ERROR: data dir not found: ${DATA_DIR}" >&2
-  exit 2
-fi
-
 CMD=(
-  "${PYTHON_BIN}" "${SCRIPT_PATH}"
-  --data_dir "${DATA_DIR}"
+  "${PYTHON_BIN}" -u "${SCRIPT_PATH}"
+  --data_dir "${DATA_DIR_RESOLVED}"
   --output_root "${OUTPUT_ROOT}"
   --run_name "${RUN_NAME}"
   --seed "${SEED}"
@@ -169,7 +224,7 @@ echo "Preliminary Study Reimplementation (Single Seed)"
 echo "Job ID: ${SLURM_JOB_ID:-N/A}"
 echo "Node: ${SLURMD_NODENAME:-N/A}"
 echo "Run: ${OUTPUT_ROOT}/${RUN_NAME}"
-echo "Data: ${DATA_DIR}"
+echo "Data: ${DATA_DIR_RESOLVED}"
 echo "============================================================"
 printf ' %q' "${CMD[@]}"
 echo
