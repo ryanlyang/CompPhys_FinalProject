@@ -1,0 +1,113 @@
+{
+  "clean_metrics": {
+    "acc": 0.74254,
+    "auc_macro_ovr": 0.9637968609382718,
+    "best_epoch": 28.0,
+    "best_val_metric_seen": 0.9635433775555555,
+    "mean_confidence": 0.7776374220848083,
+    "mean_entropy": 0.6191705465316772,
+    "signal_vs_bg_auc": 0.9571197696296296,
+    "signal_vs_bg_fpr50": 0.008,
+    "target_vs_bg_ratio_auc": 0.9898757644444445,
+    "target_vs_bg_ratio_fpr50": 0.0010666666666666667,
+    "trainer_posthoc_metric_abs_diff": 0.0,
+    "val_metric_reloaded": 0.9635433775555555
+  },
+  "feature_mode": "full",
+  "method_effectiveness": [
+    {
+      "acc_gap": 0.18640000000000004,
+      "auc_gap": 0.07713899780092599,
+      "gap_target_minus_random": 0.16723615396186073,
+      "method": "input_gradients",
+      "random_drop": 0.031837909105958906,
+      "targeted_drop": 0.19907406306781966
+    },
+    {
+      "acc_gap": 0.24543750000000003,
+      "auc_gap": 0.09946152384259269,
+      "gap_target_minus_random": 0.22112317158312364,
+      "method": "integrated_gradients",
+      "random_drop": 0.031837909105958906,
+      "targeted_drop": 0.2529610806890826
+    },
+    {
+      "acc_gap": 0.18985000000000002,
+      "auc_gap": 0.07521989293981492,
+      "gap_target_minus_random": 0.17362256011541916,
+      "method": "smoothgrad",
+      "random_drop": 0.031837909105958906,
+      "targeted_drop": 0.20546046922137806
+    }
+  ],
+  "n_test_jets": 150000,
+  "n_train_jets": 150000,
+  "n_val_jets": 50000,
+  "run_name": "prelim_reimpl_seed52_cluster",
+  "sanity_checks": {
+    "class_balance_eval_split": {
+      "counts": {
+        "HToBB": 15000,
+        "HToCC": 15000,
+        "HToGG": 15000,
+        "HToWW2Q1L": 15000,
+        "HToWW4Q": 15000,
+        "TTBar": 15000,
+        "TTBarLep": 15000,
+        "WToQQ": 15000,
+        "ZJetsToNuNu": 15000,
+        "ZToQQ": 15000
+      },
+      "max_minus_min": 0,
+      "status": "pass"
+    },
+    "disjoint_split_construction": {
+      "overlap_counts": {
+        "train_test_overlap": 0,
+        "train_val_overlap": 0,
+        "val_test_overlap": 0
+      },
+      "status": "pass"
+    },
+    "label_mapping_permutation_diagnostic": {
+      "best_permutation_accuracy": 0.74254,
+      "delta_perm": 0.0,
+      "raw_accuracy": 0.74254,
+      "status": "pass"
+    },
+    "non_finite_output_checks": {
+      "clean_logits_finite": true,
+      "clean_probs_finite": true,
+      "corruptions_all_finite": true,
+      "status": "pass"
+    },
+    "targeted_vs_random_masking_parity": {
+      "max_abs_k_mean_diff": 2.220446049250313e-16,
+      "status": "pass"
+    },
+    "trainer_vs_reloaded_val_consistency": {
+      "abs_diff": 0.0,
+      "best_val_metric_seen": 0.9635433775555555,
+      "reloaded_val_metric": 0.9635433775555555,
+      "status": "pass"
+    }
+  },
+  "seed": 52,
+  "top_shift_metric_ranking": [
+    {
+      "abs_spearman_delta_auc": 0.9500000000000001,
+      "metric": "prob_l1_drift",
+      "rank": 1
+    },
+    {
+      "abs_spearman_delta_auc": 0.9500000000000001,
+      "metric": "top1_flip_rate",
+      "rank": 2
+    },
+    {
+      "abs_spearman_delta_auc": 0.9500000000000001,
+      "metric": "class_js_divergence",
+      "rank": 3
+    }
+  ]
+}
