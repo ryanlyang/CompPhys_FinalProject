@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=prelimReimpl
-#SBATCH --partition=tier3
+#SBATCH --partition=debug
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=8
 #SBATCH --mem=96G
-#SBATCH --time=2-00:00:00
+#SBATCH --time=1-00:00:00
 #SBATCH --output=restart_studies/logs/prelim_reimpl_%j.out
 #SBATCH --error=restart_studies/logs/prelim_reimpl_%j.err
 
