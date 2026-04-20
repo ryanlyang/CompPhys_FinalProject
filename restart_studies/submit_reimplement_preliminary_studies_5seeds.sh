@@ -28,8 +28,10 @@ echo "[submit] run basename: ${RUN_BASENAME}"
 echo "[submit] seeds: ${SEEDS}"
 echo "[submit] results root: ${RESULTS_ROOT}"
 
-SUBMIT_OUT="$(sbatch \
-  --export=ALL,PROJECT_ROOT="${PROJECT_ROOT}",SEEDS="${SEEDS}",RUN_BASENAME="${RUN_BASENAME}",OUTPUT_ROOT="${RESULTS_ROOT}" \
+# NOTE: Do not pass comma-separated SEEDS via --export list. Slurm splits --export on commas,
+# which would truncate SEEDS (e.g., "41,52,..." -> "41").
+SUBMIT_OUT="$(SEEDS="${SEEDS}" sbatch \
+  --export=ALL,PROJECT_ROOT="${PROJECT_ROOT}",RUN_BASENAME="${RUN_BASENAME}",OUTPUT_ROOT="${RESULTS_ROOT}" \
   "${ARRAY_SCRIPT}")"
 ARRAY_JOB_ID="$(echo "${SUBMIT_OUT}" | grep -Eo '[0-9]+' | tail -1)"
 
@@ -40,9 +42,9 @@ fi
 
 echo "[submit] array submitted: ${SUBMIT_OUT}"
 
-AGG_OUT="$(sbatch \
+AGG_OUT="$(SEEDS="${SEEDS}" sbatch \
   --dependency=afterok:${ARRAY_JOB_ID} \
-  --export=ALL,PROJECT_ROOT="${PROJECT_ROOT}",RESULTS_ROOT="${RESULTS_ROOT}",RUN_BASENAME="${RUN_BASENAME}",SEEDS="${SEEDS}",AGG_DIR_NAME="${AGG_DIR_NAME}" \
+  --export=ALL,PROJECT_ROOT="${PROJECT_ROOT}",RESULTS_ROOT="${RESULTS_ROOT}",RUN_BASENAME="${RUN_BASENAME}",AGG_DIR_NAME="${AGG_DIR_NAME}" \
   "${AGG_SCRIPT}")"
 AGG_JOB_ID="$(echo "${AGG_OUT}" | grep -Eo '[0-9]+' | tail -1)"
 
