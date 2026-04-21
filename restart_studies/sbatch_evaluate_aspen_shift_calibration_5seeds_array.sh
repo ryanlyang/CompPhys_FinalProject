@@ -2,9 +2,8 @@
 #SBATCH --job-name=aspenShift5
 #SBATCH --partition=tier3
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=4
 #SBATCH --mem=96G
-#SBATCH --time=1-00:00:00
+#SBATCH --time=12:00:00
 #SBATCH --array=0-4
 #SBATCH --output=restart_studies/logs/aspen_shift5_%A_%a.out
 #SBATCH --error=restart_studies/logs/aspen_shift5_%A_%a.err
