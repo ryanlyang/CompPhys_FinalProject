@@ -1,0 +1,5 @@
+split,file_name,file,file_size_mb,n_jets,sampled_jets,pf_max_constits,pf_mean_constits_sample,pf_padding_frac_sample,sample_duplicate_events,keys
+train,RunG_batch0.h5,/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets/RunG_batch0.h5,2269.184,1955532,10000,150,47.5959,0.682694,0,PFCands|event_info|jet_kinematics|jet_tagging
+val,RunG_batch1.h5,/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets/RunG_batch1.h5,2363.568,2122945,10000,150,47.5097,0.6832686666666667,0,PFCands|event_info|jet_kinematics|jet_tagging
+train,RunG_batch10.h5,/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets/RunG_batch10.h5,2301.204,2072464,10000,150,47.3166,0.6845559999999999,0,PFCands|event_info|jet_kinematics|jet_tagging
+train,RunG_batch11.h5,/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets/RunG_batch11.h5,2383.651,2148861,10000,150,47.7168,0.681888,0,PFCands|event_info|jet_kinematics|jet_tagging

@@ -1,0 +1,77 @@
+{
+  "expected_keys_for_aojprocessing_output": [
+    "event_info",
+    "jet_kinematics",
+    "jet_tagging",
+    "PFCands"
+  ],
+  "feature_names": {
+    "PFCands": [
+      "px",
+      "py",
+      "pz",
+      "E",
+      "d0",
+      "d0Err",
+      "dz",
+      "dzErr",
+      "charge",
+      "pdgId",
+      "puppiWeight"
+    ],
+    "event_info": [
+      "run",
+      "luminosityBlock",
+      "event"
+    ],
+    "jet_kinematics": [
+      "pt",
+      "eta",
+      "phi",
+      "msoftdrop"
+    ],
+    "jet_tagging": [
+      "nConstituents",
+      "tau1",
+      "tau2",
+      "tau3",
+      "tau4",
+      "particleNet_H4qvsQCD",
+      "particleNet_HbbvsQCD",
+      "particleNet_HccvsQCD",
+      "particleNet_QCD",
+      "particleNet_TvsQCD",
+      "particleNet_WvsQCD",
+      "particleNet_ZvsQCD",
+      "particleNet_mass"
+    ]
+  },
+  "mask_recommendation": {
+    "expression": "mask = (abs(PFCands[..., :4]).sum(axis=-1) > 0)",
+    "reason": "AOJProcessing zero-pads constituent rows; non-zero 4-momentum indicates valid constituent."
+  },
+  "split_plan": {
+    "assignment_basis": "file-level deterministic hash on file name",
+    "fractions": {
+      "test": 0.1,
+      "train": 0.8,
+      "val": 0.1
+    },
+    "seed": 52,
+    "split_file_counts": {
+      "test": 0,
+      "train": 3,
+      "val": 1
+    },
+    "split_jet_counts": {
+      "test": 0,
+      "train": 6176857,
+      "val": 2122945
+    }
+  },
+  "status": {
+    "dataset_is_unlabeled_for_supervised_classification": true,
+    "has_explicit_class_labels": false,
+    "label_keys_found": []
+  }
+}
