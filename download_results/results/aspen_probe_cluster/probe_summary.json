@@ -1,0 +1,337 @@
+{
+  "data_dir": "/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets",
+  "duplicate_event_fraction_in_sample": 0.0,
+  "duplicate_events_in_sample": 0,
+  "event_info_stats": {
+    "event": {
+      "max": 5126185107.0,
+      "mean": 1188390423.760575,
+      "min": 2447.0,
+      "std": 1100162495.1150215
+    },
+    "luminosityBlock": {
+      "max": 3020.0,
+      "mean": 685.598725,
+      "min": 1.0,
+      "std": 622.262006154461
+    },
+    "run": {
+      "max": 280385.0,
+      "mean": 279806.450275,
+      "min": 278820.0,
+      "std": 420.8021558597588
+    }
+  },
+  "files_inspected": 4,
+  "files_with_PFCands": 4,
+  "files_with_jet_kinematics": 4,
+  "glob": "Run*.h5",
+  "jet_kinematics_stats": {
+    "eta": {
+      "max": 2.4990234375,
+      "mean": -0.01167436099909246,
+      "min": -2.49951171875,
+      "std": 1.1253608186617763
+    },
+    "msoftdrop": {
+      "max": 431.25,
+      "mean": 48.22108446938594,
+      "min": -1.0,
+      "std": 49.4894423821092
+    },
+    "phi": {
+      "max": 3.1416015625,
+      "mean": -0.012008748614694923,
+      "min": -3.1416015625,
+      "std": 1.813502340869348
+    },
+    "pt": {
+      "max": 1888.0,
+      "mean": 405.914,
+      "min": 300.25,
+      "std": 99.52742665780629
+    }
+  },
+  "jet_tagging_stats": {
+    "nConstituents": {
+      "max": 138.0,
+      "mean": 47.53475,
+      "min": 2.0,
+      "std": 18.458511381947883
+    },
+    "particleNet_H4qvsQCD": {
+      "max": 0.99951171875,
+      "mean": 0.07427180800020548,
+      "min": 2.657998265931383e-10,
+      "std": 0.19151261043951026
+    },
+    "particleNet_HbbvsQCD": {
+      "max": 0.99951171875,
+      "mean": 0.03510175003858167,
+      "min": 4.743924364447594e-08,
+      "std": 0.1298238674340732
+    },
+    "particleNet_HccvsQCD": {
+      "max": 0.9990234375,
+      "mean": 0.065138073212374,
+      "min": 1.0812655091285706e-06,
+      "std": 0.1636824453215857
+    },
+    "particleNet_QCD": {
+      "max": 0.99951171875,
+      "mean": 0.7013266873031098,
+      "min": 9.080395102500916e-09,
+      "std": 0.34261443025060845
+    },
+    "particleNet_TvsQCD": {
+      "max": 0.99951171875,
+      "mean": 0.029287228765835515,
+      "min": 5.515175871551037e-09,
+      "std": 0.11646580552818386
+    },
+    "particleNet_WvsQCD": {
+      "max": 0.99951171875,
+      "mean": 0.17696637991825118,
+      "min": 1.1492520570755005e-06,
+      "std": 0.26778445226051895
+    },
+    "particleNet_ZvsQCD": {
+      "max": 0.99951171875,
+      "mean": 0.16769783365912735,
+      "min": 2.5704503059387207e-05,
+      "std": 0.2658740544379628
+    },
+    "particleNet_mass": {
+      "max": 253.625,
+      "mean": 55.77745746765137,
+      "min": -2.5390625,
+      "std": 44.22161803249385
+    },
+    "tau1": {
+      "max": 0.63720703125,
+      "mean": 0.1480186110496521,
+      "min": 0.00522613525390625,
+      "std": 0.10447001782435565
+    },
+    "tau2": {
+      "max": 0.398681640625,
+      "mean": 0.08160519871711731,
+      "min": 0.0,
+      "std": 0.047909514243220534
+    },
+    "tau3": {
+      "max": 0.28466796875,
+      "mean": 0.06246524865627289,
+      "min": 0.0,
+      "std": 0.03355613031711288
+    },
+    "tau4": {
+      "max": 0.2169189453125,
+      "mean": 0.052199848961830136,
+      "min": 0.0,
+      "std": 0.02778808392596156
+    }
+  },
+  "keys_union": [
+    "PFCands",
+    "event_info",
+    "jet_kinematics",
+    "jet_tagging"
+  ],
+  "loader_recipe": {
+    "expected_keys_for_aojprocessing_output": [
+      "event_info",
+      "jet_kinematics",
+      "jet_tagging",
+      "PFCands"
+    ],
+    "feature_names": {
+      "PFCands": [
+        "px",
+        "py",
+        "pz",
+        "E",
+        "d0",
+        "d0Err",
+        "dz",
+        "dzErr",
+        "charge",
+        "pdgId",
+        "puppiWeight"
+      ],
+      "event_info": [
+        "run",
+        "luminosityBlock",
+        "event"
+      ],
+      "jet_kinematics": [
+        "pt",
+        "eta",
+        "phi",
+        "msoftdrop"
+      ],
+      "jet_tagging": [
+        "nConstituents",
+        "tau1",
+        "tau2",
+        "tau3",
+        "tau4",
+        "particleNet_H4qvsQCD",
+        "particleNet_HbbvsQCD",
+        "particleNet_HccvsQCD",
+        "particleNet_QCD",
+        "particleNet_TvsQCD",
+        "particleNet_WvsQCD",
+        "particleNet_ZvsQCD",
+        "particleNet_mass"
+      ]
+    },
+    "mask_recommendation": {
+      "expression": "mask = (abs(PFCands[..., :4]).sum(axis=-1) > 0)",
+      "reason": "AOJProcessing zero-pads constituent rows; non-zero 4-momentum indicates valid constituent."
+    },
+    "split_plan": {
+      "assignment_basis": "file-level deterministic hash on file name",
+      "fractions": {
+        "test": 0.1,
+        "train": 0.8,
+        "val": 0.1
+      },
+      "seed": 52,
+      "split_file_counts": {
+        "test": 0,
+        "train": 3,
+        "val": 1
+      },
+      "split_jet_counts": {
+        "test": 0,
+        "train": 6176857,
+        "val": 2122945
+      }
+    },
+    "status": {
+      "dataset_is_unlabeled_for_supervised_classification": true,
+      "has_explicit_class_labels": false,
+      "label_keys_found": []
+    }
+  },
+  "pfcand_count_per_jet_summary": {
+    "count": 40000,
+    "max": 138,
+    "mean": 47.53475,
+    "min": 2,
+    "p50": 46.0,
+    "p90": 72.0,
+    "p95": 81.0,
+    "p99": 96.0,
+    "std": 18.458511381947897
+  },
+  "pfcand_valid_stats": {
+    "E": {
+      "max": 2282.00244140625,
+      "mean": 13.500324225739247,
+      "min": 0.23324918746948242,
+      "std": 42.96501524276926
+    },
+    "charge": {
+      "max": 1.0,
+      "mean": 0.00892610143105833,
+      "min": -1.0,
+      "std": 0.7786897459920461
+    },
+    "d0": {
+      "max": 124.8125,
+      "mean": -0.431902980668938,
+      "min": -119.0625,
+      "std": 1.9068188648123556
+    },
+    "d0Err": {
+      "max": Infinity,
+      "mean": Infinity,
+      "min": -1.0,
+      "std": NaN
+    },
+    "dz": {
+      "max": 521.0,
+      "mean": -0.43742613389728396,
+      "min": -452.25,
+      "std": 4.589571981309353
+    },
+    "dzErr": {
+      "max": Infinity,
+      "mean": Infinity,
+      "min": -1.0,
+      "std": NaN
+    },
+    "pdgId": {
+      "max": 211.0,
+      "mean": 19.23148223142017,
+      "min": -211.0,
+      "std": 167.08748135276974
+    },
+    "puppiWeight": {
+      "max": 1.0,
+      "mean": 0.9828560984111665,
+      "min": 0.0117645263671875,
+      "std": 0.07136868898317576
+    },
+    "px": {
+      "max": 885.7654418945312,
+      "mean": -0.017285782544870648,
+      "min": -722.2163696289062,
+      "std": 15.079984370914325
+    },
+    "py": {
+      "max": 1067.8572998046875,
+      "mean": -0.0034007830695014086,
+      "min": -619.480224609375,
+      "std": 15.202918653259907
+    },
+    "pz": {
+      "max": 2250.645751953125,
+      "mean": -0.12748914404482678,
+      "min": -2026.4423828125,
+      "std": 39.61929273756695
+    }
+  },
+  "sample_jets_per_file": 10000,
+  "schema_by_key": {
+    "PFCands": [
+      {
+        "dtype": "float32",
+        "shape_tail": [
+          150,
+          11
+        ]
+      }
+    ],
+    "event_info": [
+      {
+        "dtype": "int64",
+        "shape_tail": [
+          3
+        ]
+      }
+    ],
+    "jet_kinematics": [
+      {
+        "dtype": "float32",
+        "shape_tail": [
+          4
+        ]
+      }
+    ],
+    "jet_tagging": [
+      {
+        "dtype": "float32",
+        "shape_tail": [
+          13
+        ]
+      }
+    ]
+  },
+  "schema_consistent": true,
+  "total_events_sampled": 40000,
+  "total_jets": 8299802,
+  "warnings": []
+}

@@ -1,0 +1,14 @@
+{
+  "acc": 0.7368733333333334,
+  "auc_macro_ovr": 0.9627633469382715,
+  "best_epoch": 29.0,
+  "best_val_metric_seen": 0.9615882493333334,
+  "mean_confidence": 0.771141767501831,
+  "mean_entropy": 0.6380888223648071,
+  "signal_vs_bg_auc": 0.9552123138271607,
+  "signal_vs_bg_fpr50": 0.0082,
+  "target_vs_bg_ratio_auc": 0.9876538622222223,
+  "target_vs_bg_ratio_fpr50": 0.0008666666666666666,
+  "trainer_posthoc_metric_abs_diff": 0.0,
+  "val_metric_reloaded": 0.9615882493333334
+}

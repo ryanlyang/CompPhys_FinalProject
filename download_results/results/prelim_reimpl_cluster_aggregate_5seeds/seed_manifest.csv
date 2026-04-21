@@ -1,0 +1,6 @@
+seed,run_name,run_dir,status,missing_files
+41,prelim_reimpl_cluster_seed41,/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41,ok,
+52,prelim_reimpl_cluster_seed52,/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed52,ok,
+63,prelim_reimpl_cluster_seed63,/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63,ok,
+74,prelim_reimpl_cluster_seed74,/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed74,ok,
+85,prelim_reimpl_cluster_seed85,/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed85,ok,

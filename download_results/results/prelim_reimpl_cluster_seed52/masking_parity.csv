@@ -1,0 +1,13 @@
+method,mask_frac,targeted_mask_k_mean,random_mask_k_mean,abs_diff
+input_gradients,0.02,1.02175,1.02175,0.0
+input_gradients,0.05,1.9712,1.9712000000000003,2.220446049250313e-16
+input_gradients,0.1,3.9224,3.9224,0.0
+input_gradients,0.2,7.84855,7.84855,0.0
+integrated_gradients,0.02,1.02175,1.02175,0.0
+integrated_gradients,0.05,1.9712,1.9712000000000003,2.220446049250313e-16
+integrated_gradients,0.1,3.9224,3.9224,0.0
+integrated_gradients,0.2,7.84855,7.84855,0.0
+smoothgrad,0.02,1.02175,1.02175,0.0
+smoothgrad,0.05,1.9712,1.9712000000000003,2.220446049250313e-16
+smoothgrad,0.1,3.9224,3.9224,0.0
+smoothgrad,0.2,7.84855,7.84855,0.0

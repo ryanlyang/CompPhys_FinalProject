@@ -1,0 +1,19 @@
+{
+  "aspen_chunk_jets": 50000,
+  "aspen_data_dir": "/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets",
+  "aspen_glob": "Run*.h5",
+  "aspen_n_jets_target": 1000000,
+  "batch_size": 512,
+  "checkpoint_path": "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41/clean_baseline_best.pt",
+  "clip_delta_max": 1.0,
+  "clip_delta_min": 0.0,
+  "device": "cuda",
+  "feature_mode": "full",
+  "jetclass_data_dir": "/home/ryreu/atlas/PracticeTagging/data/jetclass_part0",
+  "max_constits": 128,
+  "metric_definition_note": "Shift metrics are distributional between clean JetClass reference and target set; top1_flip_rate/prob_l1_drift are distributional analogues.",
+  "model_run_dir": "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41",
+  "model_run_name": "prelim_reimpl_cluster_seed41",
+  "num_workers": 4,
+  "seed": 41
+}

@@ -1,0 +1,35 @@
+{
+  "PFCands": [
+    {
+      "dtype": "float32",
+      "shape_tail": [
+        150,
+        11
+      ]
+    }
+  ],
+  "event_info": [
+    {
+      "dtype": "int64",
+      "shape_tail": [
+        3
+      ]
+    }
+  ],
+  "jet_kinematics": [
+    {
+      "dtype": "float32",
+      "shape_tail": [
+        4
+      ]
+    }
+  ],
+  "jet_tagging": [
+    {
+      "dtype": "float32",
+      "shape_tail": [
+        13
+      ]
+    }
+  ]
+}

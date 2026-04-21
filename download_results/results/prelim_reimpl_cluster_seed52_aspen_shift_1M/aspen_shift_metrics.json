@@ -1,0 +1,46 @@
+{
+  "aspen_shift_metrics": {
+    "class_js_divergence": 0.19223472832166344,
+    "confidence_drop": 0.2378333933277974,
+    "entropy_shift": 0.6217845467046537,
+    "prob_l1_drift": 1.0019422001679341,
+    "top1_flip_rate": 0.665617
+  },
+  "aspen_stats": {
+    "class_dist": [
+      0.01367305949466064,
+      0.0685119510969091,
+      0.0007040826244534661,
+      0.007943759505217822,
+      0.005103779408614321,
+      0.17600677218746402,
+      0.004085790770457963,
+      0.22160114397681796,
+      0.384350145614931,
+      0.11801951532047372
+    ],
+    "mean_confidence": 0.5398040512200147,
+    "mean_entropy": 1.2409551046658833,
+    "top1_hist": [
+      0.000351,
+      0.015733,
+      0.0,
+      0.004282,
+      8.8e-05,
+      0.197687,
+      0.00172,
+      0.228192,
+      0.551198,
+      0.000749
+    ]
+  },
+  "files_considered": 4,
+  "files_consumed": [
+    {
+      "file": "/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets/RunG_batch0.h5",
+      "file_name": "RunG_batch0.h5",
+      "n_jets_consumed": 1000000
+    }
+  ],
+  "n_jets_used": 1000000
+}

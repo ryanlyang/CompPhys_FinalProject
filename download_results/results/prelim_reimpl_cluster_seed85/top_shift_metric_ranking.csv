@@ -1,0 +1,6 @@
+rank,metric,abs_spearman_delta_auc
+1,prob_l1_drift,0.9833333333333333
+2,top1_flip_rate,0.9833333333333333
+3,class_js_divergence,0.9833333333333333
+4,entropy_shift,0.7666666666666667
+5,confidence_drop,0.5833333333333334

@@ -1,0 +1,15 @@
+{
+  "aspen_n_jets_used": 1000000,
+  "aspen_shift_metrics": {
+    "class_js_divergence": 0.14041589328593396,
+    "confidence_drop": 0.26421389183149735,
+    "entropy_shift": 0.8421449461922824,
+    "prob_l1_drift": 0.8878415234204146,
+    "top1_flip_rate": 0.699861
+  },
+  "clean_acc": 0.75514,
+  "ensemble_predicted_delta_acc": 0.6625141010626215,
+  "ensemble_predicted_expected_acc": 0.09262589893737849,
+  "model_run_name": "prelim_reimpl_cluster_seed63",
+  "seed": 63
+}
