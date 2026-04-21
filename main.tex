@@ -1,0 +1,39 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\sisetup{
+  detect-all,
+  round-mode=places,
+  round-precision=4
+}
+
+\title{Offline JetClass Baseline Reimplementation and Diagnostic Studies}
+\author{Ryan \\ Rochester Institute of Technology}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper reports the restart baseline results for the computational physics final project on offline JetClass classification. We reimplemented the preliminary studies with controlled corruption benchmarks, unlabeled shift-metric calibration, and interpretability-based masking analysis. We summarize five-seed aggregate results and identify the most stable diagnostics for subsequent project phases.
+\end{abstract}
+
+\section{Introduction}
+This manuscript summarizes the first results block after the project restart: a clean offline baseline, corruption stress testing, calibration of unlabeled shift metrics, and interpretability effectiveness under matched masking budgets. The interpretability study includes input gradients, Integrated Gradients \cite{sundararajan2017axiomatic}, and SmoothGrad \cite{smilkov2017smoothgrad}.
+
+\input{results_section_draft}
+
+\section{Conclusion}
+The restart baseline is stable across seeds and provides a reproducible reference point for the next stage of the project. In particular, high clean AUC, consistent corruption-tracking shift metrics, and clear targeted-versus-random masking gaps establish a strong empirical foundation for future training-time interventions.
+
+\bibliographystyle{unsrtnat}
+\bibliography{main}
+
+\end{document}

@@ -1,0 +1,84 @@
+% Draft results section for the Comp Phys final paper.
+% This snippet is intended to be pasted into an Overleaf manuscript.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Reimplementation Protocol and Evaluation Scope}
+We reimplemented the preliminary JetClass studies from scratch and evaluated the pipeline across five independent seeds ($\{41,52,63,74,85\}$), with fixed data splits and model/training settings per run. For each seed, we measured: (i) clean offline classification performance, (ii) corruption-induced performance degradation and unlabeled shift metrics, and (iii) interpretability-based masking effectiveness. We then aggregated all metrics across seeds using mean, standard deviation, and min/max.
+
+All five seeded runs completed successfully (5/5 with no missing outputs). This section reports the aggregated results from \texttt{prelim\_reimpl\_cluster\_aggregate\_5seeds}.
+
+\subsection{Clean Baseline Performance}
+Table~\ref{tab:clean-aggregate} shows stable clean performance across seeds. The macro one-vs-rest AUC is high ($0.9651\pm0.0019$), with moderate seed-to-seed spread in top-1 accuracy ($0.7459\pm0.0073$). Signal-vs-background and target-vs-background operating-point metrics are similarly consistent.
+
+\begin{table}[t]
+\centering
+\caption{Clean performance aggregated over 5 seeds.}
+\label{tab:clean-aggregate}
+\begin{tabular}{lccc}
+\toprule
+Metric & Mean $\pm$ Std & Min & Max \\
+\midrule
+Accuracy & $0.7459 \pm 0.0073$ & $0.7369$ & $0.7551$ \\
+Macro AUC (OvR) & $0.9651 \pm 0.0019$ & $0.9628$ & $0.9674$ \\
+Signal-vs-BG AUC & $0.9573 \pm 0.0015$ & $0.9552$ & $0.9587$ \\
+Signal-vs-BG FPR@50\% TPR & $0.00785 \pm 0.00050$ & $0.00727$ & $0.00840$ \\
+Target-vs-BG-ratio AUC & $0.9910 \pm 0.0023$ & $0.9877$ & $0.9934$ \\
+Target-vs-BG-ratio FPR@50\% TPR & $0.000747 \pm 0.000328$ & $0.000333$ & $0.001067$ \\
+Best epoch & $28.8 \pm 1.3$ & $27$ & $30$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Unlabeled Shift-Metric Calibration and Ranking}
+We evaluated five unlabeled shift metrics against corruption-induced $\Delta$AUC. Table~\ref{tab:shift-calib} shows that \texttt{prob\_l1\_drift}, \texttt{top1\_flip\_rate}, and \texttt{class\_js\_divergence} are the strongest rank-correlated indicators of degradation (mean Spearman $\rho\approx0.957$). By contrast, \texttt{confidence\_drop} is weaker and more variable.
+
+Across all five seeds, \texttt{prob\_l1\_drift} ranked first in absolute Spearman correlation with $\Delta$AUC (5/5 seeds), making it the most stable top-ranked unlabeled shift indicator in this reimplementation.
+
+\begin{table}[t]
+\centering
+\caption{Calibration of unlabeled shift metrics against corruption-induced $\Delta$AUC (5-seed aggregate).}
+\label{tab:shift-calib}
+\begin{tabular}{lcc}
+\toprule
+Shift metric & Spearman($\Delta$AUC) mean $\pm$ std & Pearson($\Delta$AUC) mean $\pm$ std \\
+\midrule
+\texttt{prob\_l1\_drift} & $0.9567 \pm 0.0149$ & $0.9851 \pm 0.0009$ \\
+\texttt{top1\_flip\_rate} & $0.9567 \pm 0.0149$ & $0.9849 \pm 0.0010$ \\
+\texttt{class\_js\_divergence} & $0.9567 \pm 0.0149$ & $0.9296 \pm 0.0072$ \\
+\texttt{entropy\_shift} & $0.8467 \pm 0.0701$ & $0.6443 \pm 0.1767$ \\
+\texttt{confidence\_drop} & $0.7600 \pm 0.1512$ & $0.4313 \pm 0.2593$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretability Method Effectiveness}
+We compared targeted masking (mask highest-attribution constituents) to random masking at matched mask fractions. The masking parity check confirms fairness of the intervention size: targeted and random remove the same average number of constituents per jet at each fraction.
+
+Table~\ref{tab:interp-effect} shows that all three methods produce substantial targeted-vs-random gaps, with Integrated Gradients (IG) \cite{sundararajan2017axiomatic} strongest overall. The mean probability-drop gap for IG is $0.2286\pm0.0125$, with corresponding mean AUC and accuracy gaps of $0.1008\pm0.0063$ and $0.2527\pm0.0154$, respectively. SmoothGrad \cite{smilkov2017smoothgrad} and input gradients also show clear positive gaps, but smaller than IG.
+
+\begin{table}[t]
+\centering
+\caption{Interpretability masking effectiveness over 5 seeds. Random masking uses matched mask sizes.}
+\label{tab:interp-effect}
+\begin{tabular}{lccc}
+\toprule
+Method & Targeted drop & Random drop & Gap (targeted$-$random) \\
+\midrule
+Input gradients & $0.1951 \pm 0.0182$ & $0.0305 \pm 0.0011$ & $0.1645 \pm 0.0178$ \\
+Integrated gradients & $0.2591 \pm 0.0130$ & $0.0305 \pm 0.0011$ & $0.2286 \pm 0.0125$ \\
+SmoothGrad & $0.2021 \pm 0.0117$ & $0.0305 \pm 0.0011$ & $0.1716 \pm 0.0118$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretation and Implications}
+These results support three conclusions for the restart baseline:
+\begin{enumerate}
+\item The clean offline baseline is strong and reproducible across seeds.
+\item Unlabeled shift metrics based on prediction-distribution change (especially \texttt{prob\_l1\_drift}) reliably track degradation under controlled corruptions.
+\item Attribution-guided perturbations are consistently more damaging than random masking at matched perturbation budgets, indicating that the attribution signals capture model-relevant constituents.
+\end{enumerate}
+
+This establishes a stable empirical baseline for the next stage of the project, where we will test whether these diagnostics can be used to drive improved training or adaptation strategies.

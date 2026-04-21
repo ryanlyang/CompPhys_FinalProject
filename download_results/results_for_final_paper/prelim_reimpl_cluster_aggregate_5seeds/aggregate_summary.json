@@ -1,0 +1,24 @@
+{
+  "acc_mean": 0.7459213333333334,
+  "acc_std": 0.007338898494400308,
+  "auc_macro_ovr_mean": 0.9650545395061728,
+  "auc_macro_ovr_std": 0.001937316021494536,
+  "missing_run_names": [],
+  "output_dir": "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds",
+  "results_root": "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results",
+  "run_basename": "prelim_reimpl_cluster",
+  "runs_missing": 0,
+  "runs_ok": 5,
+  "seeds_requested": [
+    41,
+    52,
+    63,
+    74,
+    85
+  ],
+  "signal_vs_bg_auc_mean": 0.9573057988641975,
+  "signal_vs_bg_auc_std": 0.001464319580358571,
+  "target_vs_bg_ratio_auc_mean": 0.9910094857777778,
+  "target_vs_bg_ratio_auc_std": 0.0023281203396188863,
+  "top_rank1_metric_mode": "prob_l1_drift"
+}
