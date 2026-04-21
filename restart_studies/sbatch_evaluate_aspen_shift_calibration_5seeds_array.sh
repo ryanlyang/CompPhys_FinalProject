@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=aspenShift5
-#SBATCH --partition=debug
+#SBATCH --partition=tier3
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=96G
 #SBATCH --time=1-00:00:00
 #SBATCH --array=0-4

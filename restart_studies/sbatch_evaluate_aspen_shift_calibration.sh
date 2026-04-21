@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #SBATCH --job-name=aspenShift
-#SBATCH --partition=debug
+#SBATCH --partition=tier3
 #SBATCH --gres=gpu:1
-#SBATCH --cpus-per-task=8
+#SBATCH --cpus-per-task=4
 #SBATCH --mem=96G
 #SBATCH --time=1-00:00:00
 #SBATCH --output=restart_studies/logs/aspen_shift_%j.out
@@ -49,7 +49,7 @@ ASPEN_CHUNK_JETS="${ASPEN_CHUNK_JETS:-50000}"
 
 JETCLASS_DATA_DIR="${JETCLASS_DATA_DIR:-}"
 BATCH_SIZE="${BATCH_SIZE:--1}"
-NUM_WORKERS="${NUM_WORKERS:--1}"
+NUM_WORKERS="${NUM_WORKERS:-4}"
 DEVICE="${DEVICE:-cuda}"
 CLIP_DELTA_MIN="${CLIP_DELTA_MIN:-0.0}"
 CLIP_DELTA_MAX="${CLIP_DELTA_MAX:-1.0}"
