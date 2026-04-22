@@ -434,10 +434,14 @@ def load_canonical_backend(user_path: Path | None) -> tuple[ModuleType, Path]:
         if not path.is_file():
             continue
         try:
-            spec = importlib.util.spec_from_file_location("canonical_eval_backend", str(path))
+            module_name = f"canonical_eval_backend_{abs(hash(str(path)))}"
+            spec = importlib.util.spec_from_file_location(module_name, str(path))
             if spec is None or spec.loader is None:
                 continue
             mod = importlib.util.module_from_spec(spec)
+            # Some backends use @dataclass and expect their module to be present
+            # in sys.modules during execution.
+            sys.modules[module_name] = mod
             spec.loader.exec_module(mod)  # type: ignore[union-attr]
 
             missing = [a for a in req_attrs if not hasattr(mod, a)]
@@ -455,6 +459,10 @@ def load_canonical_backend(user_path: Path | None) -> tuple[ModuleType, Path]:
                 continue
             return mod, path
         except Exception as exc:  # pragma: no cover
+            try:
+                sys.modules.pop(module_name, None)
+            except Exception:
+                pass
             last_error = f"{path}: {exc}"
             continue
 
