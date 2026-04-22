@@ -387,7 +387,12 @@ def _candidate_backend_paths(user_path: Path | None) -> List[Path]:
         cands.append(user_path.expanduser().resolve())
     cands.extend(
         [
+            (PROJECT_ROOT / "restart_studies" / "backends" / "evaluate_jetclass_hlt_teacher_baseline_canonical.py").resolve(),
+            (PROJECT_ROOT / "PracticeTagging" / "evaluate_jetclass_hlt_teacher_baseline.py").resolve(),
             (PROJECT_ROOT / "ATLAS-top-tagging-open-data" / "evaluate_jetclass_hlt_teacher_baseline.py").resolve(),
+            Path("/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py"),
+            Path("/home/ryreu/atlas/CompPhys_FinalProject/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"),
+            Path("/home/ryreu/atlas/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"),
             Path("/home/ryreu/atlas/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"),
             Path("/home/ryreu/atlas/CompPhys_FinalProject/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"),
             Path("/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"),

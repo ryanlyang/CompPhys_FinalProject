@@ -136,12 +136,22 @@ fi
 if [[ -n "${CANONICAL_BACKEND_PY:-}" ]]; then
   BACKEND_CANDIDATES=(
     "${CANONICAL_BACKEND_PY}"
+    "${PROJECT_ROOT_RESOLVED}/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py"
+    "${PROJECT_ROOT_RESOLVED}/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
+    "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py"
+    "/home/ryreu/atlas/CompPhys_FinalProject/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
+    "/home/ryreu/atlas/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
     "/home/ryreu/atlas/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
     "/home/ryreu/atlas/CompPhys_FinalProject/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
     "/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
   )
 else
   BACKEND_CANDIDATES=(
+    "${PROJECT_ROOT_RESOLVED}/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py"
+    "${PROJECT_ROOT_RESOLVED}/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
+    "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py"
+    "/home/ryreu/atlas/CompPhys_FinalProject/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
+    "/home/ryreu/atlas/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py"
     "${PROJECT_ROOT_RESOLVED}/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
     "/home/ryreu/atlas/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
     "/home/ryreu/atlas/CompPhys_FinalProject/ATLAS-top-tagging-open-data/evaluate_jetclass_hlt_teacher_baseline.py"
