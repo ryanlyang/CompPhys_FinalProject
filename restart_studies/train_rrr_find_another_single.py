@@ -21,6 +21,7 @@ import json
 import math
 import random
 import sys
+from contextlib import nullcontext
 from pathlib import Path
 from typing import Dict, Iterable, List, Sequence
 
@@ -270,14 +271,25 @@ def train_one_iteration(
             a = torch.tensor(a_mask_tr[bid], dtype=torch.float32, device=device)
 
             opt.zero_grad(set_to_none=True)
-            logits = model(x, m)
-            ce = F.cross_entropy(logits, y)
-            tlog = logits.gather(1, y.view(-1, 1)).sum()
-            gx = torch.autograd.grad(tlog, x, create_graph=True)[0]
-            rrr_num = (gx.square() * a).sum()
-            rrr_den = torch.clamp(a.sum(), min=1.0)
-            rrr = rrr_num / rrr_den
-            loss = ce + lam * rrr
+            # RRR requires second-order gradients. Force math SDPA backend
+            # to avoid unsupported double-backward paths in efficient/flash kernels.
+            if device.type == "cuda" and hasattr(torch.backends, "cuda") and hasattr(torch.backends.cuda, "sdp_kernel"):
+                sdp_ctx = torch.backends.cuda.sdp_kernel(
+                    enable_flash=False,
+                    enable_mem_efficient=False,
+                    enable_math=True,
+                )
+            else:
+                sdp_ctx = nullcontext()
+            with sdp_ctx:
+                logits = model(x, m)
+                ce = F.cross_entropy(logits, y)
+                tlog = logits.gather(1, y.view(-1, 1)).sum()
+                gx = torch.autograd.grad(tlog, x, create_graph=True)[0]
+                rrr_num = (gx.square() * a).sum()
+                rrr_den = torch.clamp(a.sum(), min=1.0)
+                rrr = rrr_num / rrr_den
+                loss = ce + lam * rrr
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
             opt.step()
