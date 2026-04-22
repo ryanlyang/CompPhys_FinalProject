@@ -1,0 +1,25 @@
+{
+  "a_sources": [
+    "input_grad",
+    "integrated_gradients",
+    "smoothgrad"
+  ],
+  "lambda_values": [
+    1.0,
+    10.0,
+    100.0,
+    1000.0
+  ],
+  "mask_fracs": [
+    0.05,
+    0.1,
+    0.2,
+    0.3
+  ],
+  "n_completed_configs": 0,
+  "n_expected_configs": 48,
+  "output_run_name": "rrr_findanother_seed52_aggregate_smoketest",
+  "results_root": "/home/ryan/Documents/School/CompPhys/new_final_project/restart_studies/results",
+  "run_basename": "rrr_findanother_seed52",
+  "top_config_by_aspen_strong3": null
+}

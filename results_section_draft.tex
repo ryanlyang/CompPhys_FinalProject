@@ -4,6 +4,8 @@
 \section{Results}
 \label{sec:results}
 
+\textcolor{red}{Discuss the difficulties and failures of the Unlabeled Shift Metrics -> Accuracy Shift metrics. Also discuss how we weren't able to get runs using Integrated Gradients or SmoothGrad as in-training regularizers because they took far too long when used that way...but we still implemented methods using them. Also discuss all the sanity checks. Discuss a lot of stuff...but I just wanted to flag this stuff as being important to discuss}
+
 \subsection{Reimplementation Protocol and Evaluation Scope}
 We reimplemented the preliminary JetClass studies from scratch and evaluated the pipeline across five independent seeds ($\{41,52,63,74,85\}$), with fixed data splits and model/training settings per run. For each seed, we measured: (i) clean offline classification performance, (ii) corruption-induced performance degradation and unlabeled shift metrics, and (iii) interpretability-based masking effectiveness. We then aggregated all metrics across seeds using mean, standard deviation, and min/max.
 
@@ -73,12 +75,62 @@ SmoothGrad & $0.2021 \pm 0.0117$ & $0.0305 \pm 0.0011$ & $0.1716 \pm 0.0118$ \\
 \end{tabular}
 \end{table}
 
+\subsection{JetClass-to-AspenOpenJets Shift Diagnostics}
+We next evaluated each of the five seeded JetClass models on AspenOpenJets (AOJ) in an unlabeled setting, using $10^6$ AOJ jets per seed. Since AOJ is unlabeled in this setup, we report distribution-shift diagnostics and pseudo-accuracy transfer estimates derived from the JetClass corruption calibration mapping.
+
+Table~\ref{tab:aspen-shift} shows large and consistent cross-domain shift across seeds. In particular, \texttt{prob\_l1\_drift}, \texttt{top1\_flip\_rate}, and \texttt{class\_js\_divergence} are all substantially elevated relative to in-domain clean reference behavior. The mapped pseudo-$\Delta$Acc estimates are also large; however, as discussed below, these should be treated as qualitative sensitivity indicators rather than exact transferred accuracies.
+
+\begin{table}[t]
+\centering
+\caption{AspenOpenJets shift diagnostics and pseudo-accuracy transfer estimates over 5 seeds ($10^6$ AOJ jets/seed).}
+\label{tab:aspen-shift}
+\begin{tabular}{lccc}
+\toprule
+Metric & Mean $\pm$ Std & Min & Max \\
+\midrule
+\texttt{prob\_l1\_drift} & $0.9839 \pm 0.1026$ & $0.8878$ & $1.1494$ \\
+\texttt{top1\_flip\_rate} & $0.7123 \pm 0.0298$ & $0.6656$ & $0.7374$ \\
+\texttt{class\_js\_divergence} & $0.1871 \pm 0.0322$ & $0.1404$ & $0.2222$ \\
+\texttt{confidence\_drop} & $0.2351 \pm 0.0514$ & $0.1481$ & $0.2803$ \\
+\texttt{entropy\_shift} & $0.6920 \pm 0.1470$ & $0.4870$ & $0.8421$ \\
+Pseudo $\Delta$Acc (all-metric ensemble) & $0.6325 \pm 0.0688$ & $0.5396$ & $0.7041$ \\
+Pseudo expected Acc (all-metric ensemble) & $0.1135 \pm 0.0635$ & $0.0474$ & $0.1973$ \\
+Pseudo $\Delta$Acc (strong 3 metrics only) & $0.4871 \pm 0.0411$ & $0.4403$ & $0.5375$ \\
+Pseudo expected Acc (strong 3 metrics only) & $0.2588 \pm 0.0453$ & $0.1994$ & $0.3148$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Sanity Checks for Aspen Pipeline}
+To test whether these large AOJ shifts could be an artifact of implementation, we ran a dedicated 5-seed sanity suite covering replay consistency and output integrity. Table~\ref{tab:aspen-sanity} summarizes the outcomes.
+
+\begin{table}[t]
+\centering
+\caption{Core pipeline sanity-check outcomes for Aspen evaluation across 5 seeds.}
+\label{tab:aspen-sanity}
+\begin{tabular}{lc}
+\toprule
+Check & Pass count \\
+\midrule
+Clean replay (accuracy consistency) & $5/5$ \\
+Clean replay (AUC consistency) & $5/5$ \\
+Corruption replay consistency & $5/5$ \\
+Aspen output integrity (finite, normalized, size) & $5/5$ \\
+Strong-metric mapping $R^2$ threshold & $5/5$ \\
+Strong-metric mapping intercept sanity & $5/5$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+These checks support that the pipeline is functioning as intended: clean and corruption replays match exactly across seeds, and AOJ inference outputs are numerically well-formed. Additional calibration diagnostics indicate transfer uncertainty under strong extrapolation (18 severe and 7 warning out-of-range cases over 25 seed-metric pairs, with clipping applied to an average of 1.4 metrics per seed). Therefore, we interpret mapped pseudo-accuracy as a sensitivity indicator under shift, while treating the unlabeled shift metrics themselves as the primary robust result.
+
 \subsection{Interpretation and Implications}
-These results support three conclusions for the restart baseline:
+These results support four conclusions for the restart baseline:
 \begin{enumerate}
 \item The clean offline baseline is strong and reproducible across seeds.
 \item Unlabeled shift metrics based on prediction-distribution change (especially \texttt{prob\_l1\_drift}) reliably track degradation under controlled corruptions.
 \item Attribution-guided perturbations are consistently more damaging than random masking at matched perturbation budgets, indicating that the attribution signals capture model-relevant constituents.
+\item On AspenOpenJets, the models exhibit consistently large domain shift across seeds; sanity checks indicate this is unlikely to be a loading/checkpoint artifact, while pseudo-accuracy transfer estimates remain calibration-limited under extrapolation.
 \end{enumerate}
 
 This establishes a stable empirical baseline for the next stage of the project, where we will test whether these diagnostics can be used to drive improved training or adaptation strategies.
