@@ -1,0 +1,87 @@
+============================================================
+Preliminary Study Reimplementation (5-seed array task)
+Array Job: 21203657
+Task ID: 2
+Seed: 63
+Run name: prelim_reimpl_cluster_seed63
+Output root: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results
+Delegating to: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/sbatch_reimplement_preliminary_studies.sh
+============================================================
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/reimplement_preliminary_studies.py
+[preflight] DATA_DIR=/home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+Preliminary Study Reimplementation (Single Seed)
+Job ID: 21203671
+Node: skl-a-48
+Run: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63
+Data: /home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/reimplement_preliminary_studies.py --data_dir /home/ryreu/atlas/PracticeTagging/data/jetclass_part0 --output_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_name prelim_reimpl_cluster_seed63 --seed 63 --device cuda --num_workers 8 --feature_mode full --max_constits 128 --n_train_jets 150000 --n_val_jets 50000 --n_test_jets 150000 --batch_size 512 --epochs 30 --patience 8 --lr 7e-4 --weight_decay 1e-5 --warmup_epochs 3 --embed_dim 128 --num_heads 8 --num_layers 6 --ff_dim 512 --dropout 0.1 --target_class HToBB --background_class ZJetsToNuNu --corruptions pt_noise:0.03\,pt_noise:0.06\,eta_phi_jitter:0.02\,eta_phi_jitter:0.05\,dropout:0.05\,dropout:0.10\,merge:0.10\,merge:0.20\,global_scale:0.03 --explain_subset_size 20000 --explain_batch_size 128 --mask_fracs 0.02\,0.05\,0.10\,0.20 --ig_steps 16 --smoothgrad_samples 16 --smoothgrad_sigma 0.10 --random_mask_repeats 3
+[info] run_dir=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63
+[info] device=cuda
+[info] classes:
+  - HToBB: 10 files
+  - HToCC: 10 files
+  - HToGG: 10 files
+  - HToWW2Q1L: 10 files
+  - HToWW4Q: 10 files
+  - TTBar: 10 files
+  - TTBarLep: 10 files
+  - WToQQ: 10 files
+  - ZJetsToNuNu: 10 files
+  - ZToQQ: 10 files
+[info] loading train split
+[info] loading val split
+[info] loading test split
+[info] loaded jets train=150000 val=50000 test=150000
+[train] ep=1 train_loss=1.3799 val_acc=0.5811 val_auc=0.9191 best=0.9191
+[train] ep=2 train_loss=1.0782 val_acc=0.6313 val_auc=0.9330 best=0.9330
+[train] ep=3 train_loss=1.0109 val_acc=0.6377 val_auc=0.9389 best=0.9389
+[train] ep=4 train_loss=0.9618 val_acc=0.6681 val_auc=0.9444 best=0.9444
+[train] ep=5 train_loss=0.9313 val_acc=0.6559 val_auc=0.9416 best=0.9444
+[train] ep=6 train_loss=0.9121 val_acc=0.6634 val_auc=0.9461 best=0.9461
+[train] ep=7 train_loss=0.8961 val_acc=0.6734 val_auc=0.9482 best=0.9482
+[train] ep=8 train_loss=0.8775 val_acc=0.6827 val_auc=0.9498 best=0.9498
+[train] ep=9 train_loss=0.8677 val_acc=0.6907 val_auc=0.9509 best=0.9509
+[train] ep=10 train_loss=0.8583 val_acc=0.6652 val_auc=0.9468 best=0.9509
+[train] ep=11 train_loss=0.8477 val_acc=0.6920 val_auc=0.9521 best=0.9521
+[train] ep=12 train_loss=0.8364 val_acc=0.6985 val_auc=0.9526 best=0.9526
+[train] ep=13 train_loss=0.8286 val_acc=0.7022 val_auc=0.9542 best=0.9542
+[train] ep=14 train_loss=0.8183 val_acc=0.6847 val_auc=0.9509 best=0.9542
+[train] ep=15 train_loss=0.8065 val_acc=0.7039 val_auc=0.9545 best=0.9545
+[train] ep=16 train_loss=0.7853 val_acc=0.7146 val_auc=0.9576 best=0.9576
+[train] ep=17 train_loss=0.7585 val_acc=0.7295 val_auc=0.9611 best=0.9611
+[train] ep=18 train_loss=0.7323 val_acc=0.7363 val_auc=0.9625 best=0.9625
+[train] ep=19 train_loss=0.7121 val_acc=0.7353 val_auc=0.9633 best=0.9633
+[train] ep=20 train_loss=0.6942 val_acc=0.7384 val_auc=0.9640 best=0.9640
+[train] ep=21 train_loss=0.6788 val_acc=0.7479 val_auc=0.9652 best=0.9652
+[train] ep=22 train_loss=0.6683 val_acc=0.7495 val_auc=0.9659 best=0.9659
+[train] ep=23 train_loss=0.6568 val_acc=0.7519 val_auc=0.9663 best=0.9663
+[train] ep=24 train_loss=0.6475 val_acc=0.7524 val_auc=0.9666 best=0.9666
+[train] ep=25 train_loss=0.6379 val_acc=0.7538 val_auc=0.9669 best=0.9669
+[train] ep=26 train_loss=0.6324 val_acc=0.7523 val_auc=0.9668 best=0.9669
+[train] ep=27 train_loss=0.6263 val_acc=0.7550 val_auc=0.9673 best=0.9673
+[train] ep=28 train_loss=0.6214 val_acc=0.7542 val_auc=0.9671 best=0.9673
+[train] ep=29 train_loss=0.6198 val_acc=0.7559 val_auc=0.9672 best=0.9673
+[train] ep=30 train_loss=0.6190 val_acc=0.7557 val_auc=0.9672 best=0.9673
+[done] outputs written:
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/summary.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/clean_metrics.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/corruption_metrics.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/correlations.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/top_shift_metric_ranking.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/interpretability_per_fraction.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/method_effectiveness_summary.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/sanity_checks.json
+[done] Results:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/clean_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/corruption_metrics.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/correlations.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/top_shift_metric_ranking.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/method_effectiveness_summary.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed63/sanity_checks.json

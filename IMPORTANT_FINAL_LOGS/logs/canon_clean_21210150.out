@@ -1,0 +1,79 @@
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py
+[preflight] RUN_NAME=jetclass_canonical_clean_seed52_aspen1M
+[preflight] DATA_DIR=/home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+[preflight] ASPEN_DIR=/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[preflight] CANONICAL_BACKEND=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+Canonical Clean JetClass -> Aspen Evaluation (Single Seed)
+Job ID: 21210150
+Node: skl-a-28
+Run: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M
+Seed: 52
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py --canonical_backend_py /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py --data_dir /home/ryreu/atlas/PracticeTagging/data/jetclass_part0 --aspen_data_dir /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets --aspen_glob Run\*.h5 --aspen_n_jets 1000000 --aspen_chunk_jets 50000 --output_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_name jetclass_canonical_clean_seed52_aspen1M --seed 52 --device cuda --num_workers 4 --feature_mode full --feature_preprocessing canonical --class_assignment canonical_labels --max_constits 128 --train_files_per_class 8 --val_files_per_class 1 --test_files_per_class 1 --n_train_jets 150000 --n_val_jets 50000 --n_test_jets 150000 --batch_size 512 --epochs 30 --patience 8 --lr 7e-4 --weight_decay 1e-5 --warmup_epochs 3 --embed_dim 128 --num_heads 8 --num_layers 6 --ff_dim 512 --dropout 0.1 --target_class Hbb --background_class QCD --explain_subset_size 20000 --explain_batch_size 128 --mask_fracs 0.02\,0.05\,0.10\,0.20 --ig_steps 16 --smoothgrad_samples 16 --smoothgrad_sigma 0.10 --random_mask_repeats 3
+[info] run_dir=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M
+[info] canonical_backend=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py
+[info] device=cuda
+[info] classes:
+  - QCD: label_* branch
+  - Hbb: label_* branch
+  - Hcc: label_* branch
+  - Hgg: label_* branch
+  - H4q: label_* branch
+  - Hqql: label_* branch
+  - Zqq: label_* branch
+  - Wqq: label_* branch
+  - Tbqq: label_* branch
+  - Tbl: label_* branch
+[info] loading train split
+[load_split:canonical] progress 105000/150000 jets (iter=50)
+[info] loading val split
+[info] loading test split
+[info] loaded jets train=150000 val=50000 test=150000
+[train] ep=1 train_loss=1.3393 val_acc=0.6231 val_auc=0.9327
+[train] ep=2 train_loss=1.0100 val_acc=0.6834 val_auc=0.9497
+[train] ep=3 train_loss=0.9085 val_acc=0.7046 val_auc=0.9563
+[train] ep=4 train_loss=0.8501 val_acc=0.6983 val_auc=0.9557
+[train] ep=5 train_loss=0.8178 val_acc=0.6975 val_auc=0.9574
+[train] ep=6 train_loss=0.7895 val_acc=0.7218 val_auc=0.9619
+[train] ep=7 train_loss=0.7686 val_acc=0.7344 val_auc=0.9634
+[train] ep=8 train_loss=0.7512 val_acc=0.7336 val_auc=0.9638
+[train] ep=9 train_loss=0.7373 val_acc=0.7300 val_auc=0.9632
+[train] ep=10 train_loss=0.7244 val_acc=0.7370 val_auc=0.9655
+[train] ep=11 train_loss=0.7133 val_acc=0.7486 val_auc=0.9666
+[train] ep=12 train_loss=0.7003 val_acc=0.7447 val_auc=0.9664
+[train] ep=13 train_loss=0.6925 val_acc=0.7513 val_auc=0.9677
+[train] ep=14 train_loss=0.6805 val_acc=0.7500 val_auc=0.9675
+[train] ep=15 train_loss=0.6694 val_acc=0.7533 val_auc=0.9681
+[train] ep=16 train_loss=0.6627 val_acc=0.7506 val_auc=0.9677
+[train] ep=17 train_loss=0.6492 val_acc=0.7412 val_auc=0.9671
+[train] ep=18 train_loss=0.6372 val_acc=0.7516 val_auc=0.9682
+[train] ep=19 train_loss=0.6288 val_acc=0.7555 val_auc=0.9685
+[train] ep=20 train_loss=0.6191 val_acc=0.7653 val_auc=0.9702
+[train] ep=21 train_loss=0.6098 val_acc=0.7614 val_auc=0.9699
+[train] ep=22 train_loss=0.6005 val_acc=0.7611 val_auc=0.9701
+[train] ep=23 train_loss=0.5917 val_acc=0.7623 val_auc=0.9700
+[train] ep=24 train_loss=0.5846 val_acc=0.7617 val_auc=0.9699
+[train] ep=25 train_loss=0.5749 val_acc=0.7662 val_auc=0.9702
+[train] ep=26 train_loss=0.5686 val_acc=0.7646 val_auc=0.9700
+[train] ep=27 train_loss=0.5639 val_acc=0.7641 val_auc=0.9700
+[train] ep=28 train_loss=0.5610 val_acc=0.7624 val_auc=0.9699
+[train] early-stop at ep=28 (patience=8)
+[done] outputs written:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/clean_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/interpretability_per_fraction.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/method_effectiveness_summary.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/clean_baseline_best.pt
+[done] outputs:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/clean_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/interpretability_per_fraction.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/method_effectiveness_summary.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M/clean_baseline_best.pt

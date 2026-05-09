@@ -1,0 +1,34 @@
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/aspen_shift_sanity_checks_5seeds.py
+[preflight] RESULTS_ROOT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results
+[preflight] RUN_BASENAME=prelim_reimpl_cluster
+[preflight] ASPEN_SUFFIX=_aspen_shift_1M
+[preflight] SEEDS=41,52,63,74,85
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+Aspen Shift Sanity Checks (5 Seeds)
+Job ID: 21208587
+Node: skl-a-47
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/aspen_shift_sanity_checks_5seeds.py --results_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_basename prelim_reimpl_cluster --aspen_suffix _aspen_shift_1M --seeds 41\,52\,63\,74\,85
+========================================================================
+Aspen sanity checks complete
+Output dir: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds
+Runs found: 5 / 5
+Wrote:
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/per_seed_checks.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/corruption_replay_diffs.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/mapping_loocv_by_seed_metric.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/extrapolation_by_seed_metric.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/predicted_shift_by_seed.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/aggregate_summary.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/sanity_report.md
+========================================================================
+[done] outputs in:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds
+[done] key files:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/per_seed_checks.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/aggregate_summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aspen_sanity_5seeds/sanity_report.md

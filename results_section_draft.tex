@@ -1,0 +1,182 @@
+\section{Results}
+\label{sec:results}
+
+\subsection{Clean JetClass Baseline}
+
+The corrected baseline runs completed for all five seeds. Table~\ref{tab:clean-aggregate} shows the aggregate performance.The macro one-vs-rest AUC is stable across seeds, and the checkpoint replay difference is exactly zero in the stored diagnostics, indicating that the training-time and reloaded-evaluation paths agree.
+
+
+\begin{table}[t]
+\centering
+\caption{Clean JetClass performance aggregated over five seeds.}
+\label{tab:clean-aggregate}
+\begin{tabular}{lccc}
+\toprule
+Metric & Mean $\pm$ Std & Min & Max \\
+\midrule
+Accuracy & $0.7459 \pm 0.0073$ & $0.7369$ & $0.7551$ \\
+Macro AUC (OvR) & $0.9651 \pm 0.0019$ & $0.9628$ & $0.9674$ \\
+Signal-vs-background AUC & $0.9573 \pm 0.0015$ & $0.9552$ & $0.9587$ \\
+Signal-vs-background FPR@50\% TPR & $0.00785 \pm 0.00050$ & $0.00727$ & $0.00840$ \\
+Target-vs-background AUC & $0.9910 \pm 0.0023$ & $0.9877$ & $0.9934$ \\
+Target-vs-background FPR@50\% TPR & $0.000747 \pm 0.000328$ & $0.000333$ & $0.001067$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Corruption Calibration of Unlabeled Shift Metrics}
+
+The controlled corruption study tested whether the unlabeled diagnostics track the true supervised degradation well. Table~\ref{tab:shift-calib} shows that probability $L^1$ drift, top-1 drift, and Jensen-Shannon class-distribution shift are the strongest metrics. Their spearman correlations with $\Delta$AUC are nearly identical because the corruption severities are ordered similarly by all three metrics. Probability $L^1$ drift ranked first in all five seeds.
+
+\begin{table}[t]
+\centering
+\caption{Unlabeled shift-metric calibration against corruption-induced $\Delta$AUC.}
+\label{tab:shift-calib}
+\begin{tabular}{lcc}
+\toprule
+Metric & Spearman($\Delta$AUC) & Pearson($\Delta$AUC) \\
+\midrule
+\texttt{prob\_l1\_drift} & $0.9567 \pm 0.0149$ & $0.9851 \pm 0.0009$ \\
+\texttt{top1\_flip\_rate} & $0.9567 \pm 0.0149$ & $0.9849 \pm 0.0010$ \\
+\texttt{class\_js\_divergence} & $0.9567 \pm 0.0149$ & $0.9296 \pm 0.0072$ \\
+\texttt{entropy\_shift} & $0.8467 \pm 0.0701$ & $0.6443 \pm 0.1767$ \\
+\texttt{confidence\_drop} & $0.7600 \pm 0.1512$ & $0.4313 \pm 0.2593$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretability Sanity Check}
+
+The attribution methods were tested by masking the highest-attribution constituents  and comparing them against random masking  using the same average number of removed constituents in both. Table~\ref{tab:interp-effect} shows that all three of the attribution methods produce a clear targeted-versus-random gap. Integrated gradients has the largest probability-drop gap, while Smoothgrad and input gradients also identify the most relevant constituents effectively. 
+
+\begin{table}[t]
+\centering
+\caption{Interpretability effectiveness under matched targeted and random masking. The drop is the decrease in true-class probability averaged over mask fractions.}
+\label{tab:interp-effect}
+\begin{tabular}{lccc}
+\toprule
+Method & Targeted drop & Random drop & Gap \\
+\midrule
+Input gradients & $0.1951 \pm 0.0182$ & $0.0305 \pm 0.0011$ & $0.1645 \pm 0.0178$ \\
+Integrated Gradients & $0.2591 \pm 0.0130$ & $0.0305 \pm 0.0011$ & $0.2286 \pm 0.0125$ \\
+SmoothGrad & $0.2021 \pm 0.0117$ & $0.0305 \pm 0.0011$ & $0.1716 \pm 0.0118$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{AspenOpenJets Shift}
+
+Each of the five baseline seed models were evaluated on $10^6$  AspenOpenJets jets. Table~\ref{tab:aspen-shift} shows the large shifts across all seeds. The reported Aspen result is the direct unlabeled shift numbers themselves, not a pseudo-accuracy estimate.
+
+\begin{table}[t]
+\centering
+\caption{AspenOpenJets unlabeled shift diagnostics over five seeds.}
+\label{tab:aspen-shift}
+\begin{tabular}{lccc}
+\toprule
+Metric & Mean $\pm$ Std & Min & Max \\
+\midrule
+\texttt{prob\_l1\_drift} & $0.9839 \pm 0.1026$ & $0.8878$ & $1.1494$ \\
+\texttt{top1\_flip\_rate} & $0.7123 \pm 0.0298$ & $0.6656$ & $0.7374$ \\
+\texttt{class\_js\_divergence} & $0.1871 \pm 0.0322$ & $0.1404$ & $0.2222$ \\
+\texttt{confidence\_drop} & $0.2351 \pm 0.0514$ & $0.1481$ & $0.2803$ \\
+\texttt{entropy\_shift} & $0.6920 \pm 0.1470$ & $0.4870$ & $0.8421$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+This is an important distinction. The shift metrics remain useful though because they quantify how much the model’s prediction distribution changes on the real CMS-derived jets, and the strongest metrics were validated against labeled JetClass corruptions. However, the separate ‘unlabeled shift metric $\rightarrow$ accuracy shift'' mapping wasn’t stable enough to include quantitatively. 
+
+
+\subsection{Aspen Pipeline Sanity Checks}
+
+Table~\ref{tab:aspen-sanity} summarizes the checks that were used to rule out simple implementation failures. Clean metric replay, corruption replay, and Aspen Output integrity all passed for all five of the seeds. These checks made it unlikely that the large Aspen shift is only a checkpoint-loading, label ordering, probability normalization, or data format artifact. They show that the pipeline is internally consistent and that the remaining uncertainty comes mainly from the lack of supervised AspenOpenJets labels or an equally strong target-domain validation proxy.
+
+\begin{table}[t]
+\centering
+\caption{Core AspenOpenJets sanity-check outcomes across five seeds.}
+\label{tab:aspen-sanity}
+\begin{tabular}{lc}
+\toprule
+Check & Pass count \\
+\midrule
+Clean replay accuracy consistency & $5/5$ \\
+Clean replay AUC consistency & $5/5$ \\
+Corruption replay consistency & $5/5$ \\
+Aspen finite/normalized/size checks & $5/5$ \\
+Strong-metric mapping $R^2$ threshold & $5/5$ \\
+Strong-metric mapping intercept sanity & $5/5$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Interpretability-Guided Training}
+
+The RRR style of training study used a focused 24 configuration sweep, three attribution-mask sources, two regularization strengths  $\lambda_{\mathrm{RRR}}\in\{1,10\}$, and four mask fractions $\{0.05,0.10,0.20,0.30\}$. I initially intended to run a wider hyperparameter sweep, but the larger grid did not prove doable on the project timescale and resources. I also did not rerun the setups for more than one seed as I did for the baseline, as that was also a very expensive cost. I also did not use Integrated Gradients or SmoothGrad directly as the differentiable in-training regularizer. Doing so would require many more gradient evaluations inside each training step, which was just too expensive for my compute resources. Instead, the actual RRR penalty used input gradients, while Integrated Gradients and Smooth Grad were still implemented as attribution methods for constructing the masks used between find-another iterations.
+
+For comparison, the 5-seed baseline has JetClass accuracy as  $0.7459$, macro AUC $0.9638$, and strong3 Aspen shift $0.6199$. All 24 configurations in the focused sweep reduced strong3 relative to this baseline. Figure~\ref{fig:rrr-tradeoff} shows the accuracy-shift tradeoff: the RRR runs move downward in Aspen strong3, but also move leftward in JetClass accuracy. Table~\ref{tab:rrr-top6} reports the six focused-sweep configurations that have the lowest AspenOpenJets strong3 values, while Table~\ref{tab:rrr-best-source} reports the best configuration for each of the attribution-mask source methods. Within each of the runs, the reported interaction is selected by minimum	AspenOpenJets strong3 shift, not by JetClas accuracy. The tables then report the corresponding JetClass test accuracy for that selected iteration.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.86\linewidth]{images/rrr_sweep_tradeoff.png}
+\caption{Focused RRR sweep configurations plotted by their JetClass test accuracy and AspenOpenJets strong3 shift. The sweep uses $\lambda_{\mathrm{RRR}}\in\{1,10\}$, four mask fractions, and three different attribution-mask sources. Each point is the best iteration within a hyperparameter configuration, selected by the minimum AspenOpenJets strong3. The black start is the baseline model. Point color indicates the attribution source used to build the masks, marker shape indicates $\lambda_{\mathrm{RRR}}$, and point size increases with mask fraction.}
+\label{fig:rrr-tradeoff}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\caption{Top six focused-sweep RRR configurations ranked by AspenOpenJets strong3 shift, with the baseline included for reference. The listed iteration is selected by minimum AspenOpenJets strong3 shift within that run. JetClass test accuracy is measured on the held-out JetClass test set; AspenOpenJets remains unlabeled. Strong3 is the average of \texttt{prob\_l1\_drift}, \texttt{top1\_flip\_rate}, and \texttt{class\_js\_divergence}; lower is better.}
+\label{tab:rrr-top6}
+\begin{tabular}{lccccc}
+\toprule
+Mask source & $\lambda$ & Mask frac. & Best iter. & JetClass test acc. & Aspen strong3 \\
+\midrule
+Baseline & -- & -- & -- & $0.7459$ & $0.6199$ \\
+SmoothGrad masks & $10$ & $0.05$ & $5$ & $0.6937$ & $0.4701$ \\
+Input-gradient masks & $10$ & $0.05$ & $1$ & $0.7029$ & $0.4918$ \\
+Integrated-gradient masks & $10$ & $0.05$ & $1$ & $0.7029$ & $0.4918$ \\
+SmoothGrad masks & $10$ & $0.10$ & $3$ & $0.6922$ & $0.5004$ \\
+Input-gradient masks & $1$ & $0.30$ & $3$ & $0.7118$ & $0.5113$ \\
+Input-gradient masks & $10$ & $0.10$ & $1$ & $0.7036$ & $0.5174$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Best focused-sweep RRR configuration for each attribution-mask source. The baseline row is included for reference.}
+\label{tab:rrr-best-source}
+\begin{tabular}{lccccc}
+\toprule
+Mask source & $\lambda$ & Mask frac. & Best iter. & JetClass test acc. & Aspen strong3 \\
+\midrule
+Baseline & -- & -- & -- & $0.7459$ & $0.6199$ \\
+Input-gradient masks & $10$ & $0.05$ & $1$ & $0.7029$ & $0.4918$ \\
+Integrated-gradient masks & $10$ & $0.05$ & $1$ & $0.7029$ & $0.4918$ \\
+SmoothGrad masks & $10$ & $0.05$ & $5$ & $0.6937$ & $0.4701$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The best focused-sweep configuration reduced the strong3 metric by about $24\%$ relative to the baseline, but it reduced JetClass accuracy by about $4.9$ percentage points. A more balanced input gradient configuration such as $\lambda=1$ and mask fraction $0.30$, reduced strong3 by about $17.5\%$ while reducing JetClass accuracy by about $3.1$ percentage points. These results show that the intervention is not just random regularization, it consistently changes the model in the direction of lower AspenOPenJets shift, while showing a non-negligible performance trade.
+
+This improvement should be interpreted as a reduction in the unlabeled prediction-distribution shift, not as a direct measurement of AspenOpenJets accuracy. The metric is useful because it was calibrated against controlled JetClass corruptions and passed the pipeline sanity checks, but it is still an imperfect proxy for real-data performance. Confirming that the same intervention significantly improves the real collision-data classification would require a larger study with different kinds of data, stronger target-domain metrics, and more research compute then was available for the scope of this project.
+
+Figure~\ref{fig:rrr-heatmaps} shows the same focused sweep organized by hyperparameter cell. The best cell uses SmoothGrad masks with $\lambda_{\mathrm{RRR}}=10$ and mask fraction $0.05$.. The pattern should not be interpreted as a global best, since larger and more diverse $\lambda_{\mathrm{RRR}}$ values were left for future work, but it does show that the improvement is not isolated to a single random run.
+
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{images/rrr_sweep_heatmaps.png}
+\caption{Best AspenOpenJets strong3 shift for each focused-sweep RRR hyperparameter cell. Each panel corresponds to the attribution source used to construct masks between find-another iterations. The displayed grid uses $\lambda_{\mathrm{RRR}}\in\{1,10\}$ and four mask fractions. Lower values are better.}
+\label{fig:rrr-heatmaps}
+\end{figure}
+
+Figure~\ref{fig:rrr-trajectories} show the iteration by iteration behavior for the representative runs. The trajectories aren’t monotonic, adding more attribution derived mask coverage can improve Aspen strong3 in one iteration and worsen it in another, this supports selecting the iteration by a strong metric, while also showing why the method should be treated as a tradeoff rather than a guaranteed robustness and improvement procedure.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.94\linewidth]{images/rrr_iteration_trajectories.png}
+\caption{Find-another iteration trajectories for representative RRR configurations, one for each attribution-mask source. The left panel shows AspenOpenJets strong3 shift on a fixed 0--1 scale, and the right panel shows JetClass test accuracy for the same iterations. Dashed lines mark the baseline.}
+\label{fig:rrr-trajectories}
+\end{figure}

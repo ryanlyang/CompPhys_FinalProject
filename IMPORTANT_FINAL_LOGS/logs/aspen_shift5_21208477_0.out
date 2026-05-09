@@ -1,0 +1,52 @@
+============================================================
+Aspen Shift Calibration Evaluation (5-seed array task)
+Array Job: 21208477
+Task ID: 0
+Seed: 41
+Model run: prelim_reimpl_cluster_seed41
+Output run: prelim_reimpl_cluster_seed41_aspen_shift_1M
+Delegating to: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/sbatch_evaluate_aspen_shift_calibration.sh
+============================================================
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/evaluate_aspen_shift_calibration.py
+[preflight] RESULTS_ROOT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results
+[preflight] MODEL_RUN_NAME=prelim_reimpl_cluster_seed41
+[preflight] OUTPUT_RUN_NAME=prelim_reimpl_cluster_seed41_aspen_shift_1M
+[preflight] ASPEN_DATA_DIR=/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+Aspen Shift Calibration Evaluation (Single Seed)
+Job ID: 21208483
+Node: skl-a-58
+Seed: 41
+Model run: prelim_reimpl_cluster_seed41
+Output run: prelim_reimpl_cluster_seed41_aspen_shift_1M
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/evaluate_aspen_shift_calibration.py --results_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_basename prelim_reimpl_cluster --seed 41 --model_run_name prelim_reimpl_cluster_seed41 --aspen_data_dir /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets --aspen_glob Run\*.h5 --aspen_n_jets 1000000 --aspen_chunk_jets 50000 --output_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --output_run_name prelim_reimpl_cluster_seed41_aspen_shift_1M --device cuda --num_workers 4 --batch_size -1 --clip_delta_min 0.0 --clip_delta_max 1.0
+[info] model_run_dir= /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41
+[info] output_run_dir= /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M
+[info] device= cuda
+[info] seed= 41
+[info] jetclass_data_dir= /home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+[info] aspen_data_dir= /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[info] loading JetClass train/test splits for calibration
+[info] loaded JetClass jets train=150000 test=150000
+[info] evaluating clean JetClass reference
+[info] recomputing corruption calibration points
+[info] streaming Aspen inference
+[done] outputs:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/config_used.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/clean_reference.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/jetclass_calibration_points.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/metric_to_deltaacc_mapping.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/aspen_predicted_deltaacc_by_metric.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/summary.json
+[done] ensemble prediction: delta_acc=0.582148, expected_acc=0.161378, aspen_n_jets=1000000
+[done] outputs:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/metric_to_deltaacc_mapping.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_seed41_aspen_shift_1M/aspen_predicted_deltaacc_by_metric.csv

@@ -1,0 +1,20 @@
+============================================================
+Aggregate Preliminary Reimplementation (5 seeds)
+Job ID: 21203658
+Node: skl-a-47
+Results root: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results
+Run basename: prelim_reimpl_cluster
+Seeds: 41,52,63,74,85
+Output dir: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/aggregate_preliminary_studies_multi_seed.py --results_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_basename prelim_reimpl_cluster --seeds 41\,52\,63\,74\,85 --output_dir /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds
+[done] wrote aggregate outputs:
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/aggregate_summary.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/seed_manifest.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/clean_metrics_by_seed.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/clean_metrics_aggregate.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/shift_correlations_by_seed.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/shift_correlations_aggregate.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/method_effectiveness_by_seed.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/method_effectiveness_aggregate.csv
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/prelim_reimpl_cluster_aggregate_5seeds/top_shift_metric_rank1_frequency.csv

@@ -1,0 +1,18 @@
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py
+[preflight] RUN_NAME=jetclass_canonical_clean_seed52_aspen1M
+[preflight] DATA_DIR=/home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+[preflight] ASPEN_DIR=/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[preflight] CANONICAL_BACKEND=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+Canonical Clean JetClass -> Aspen Evaluation (Single Seed)
+Job ID: 21210019
+Node: skl-a-01
+Run: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M
+Seed: 52
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py --canonical_backend_py /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/backends/evaluate_jetclass_hlt_teacher_baseline_canonical.py --data_dir /home/ryreu/atlas/PracticeTagging/data/jetclass_part0 --aspen_data_dir /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets --aspen_glob Run\*.h5 --aspen_n_jets 1000000 --aspen_chunk_jets 50000 --output_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_name jetclass_canonical_clean_seed52_aspen1M --seed 52 --device cuda --num_workers 4 --feature_mode full --feature_preprocessing canonical --class_assignment canonical_labels --max_constits 128 --train_files_per_class 8 --val_files_per_class 1 --test_files_per_class 1 --n_train_jets 150000 --n_val_jets 50000 --n_test_jets 150000 --batch_size 512 --epochs 30 --patience 8 --lr 7e-4 --weight_decay 1e-5 --warmup_epochs 3 --embed_dim 128 --num_heads 8 --num_layers 6 --ff_dim 512 --dropout 0.1 --target_class Hbb --background_class QCD --explain_subset_size 20000 --explain_batch_size 128 --mask_fracs 0.02\,0.05\,0.10\,0.20 --ig_steps 16 --smoothgrad_samples 16 --smoothgrad_sigma 0.10 --random_mask_repeats 3
+[info] run_dir=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/jetclass_canonical_clean_seed52_aspen1M

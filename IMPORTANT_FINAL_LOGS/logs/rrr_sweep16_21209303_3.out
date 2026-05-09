@@ -1,0 +1,236 @@
+============================================================
+RRR Find-Another Sweep (16-config array)
+Array Job: 21209303
+Task ID: 3 / 15
+A_SOURCE: input_grad
+Lambda: 1
+Mask frac: 0.30
+Run name: rrr_findanother_seed52_input_grad_lam1_mask0p30
+Delegating to: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/sbatch_train_rrr_find_another_single.sh
+============================================================
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_rrr_find_another_single.py
+[preflight] RUN_NAME=rrr_findanother_seed52_input_grad_lam1_mask0p30
+[preflight] A_SOURCE=input_grad
+[preflight] LAMBDA_RRR=1
+[preflight] MASK_FRAC=0.30
+[preflight] DATA_DIR=/home/ryreu/atlas/PracticeTagging/data/jetclass_part0
+[preflight] ASPEN_DIR=/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+RRR Find-Another Training (Single Config)
+Job ID: 21212842
+Node: skl-a-53
+Output: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_rrr_find_another_single.py --data_dir /home/ryreu/atlas/PracticeTagging/data/jetclass_part0 --aspen_data_dir /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets --aspen_glob Run\*.h5 --aspen_n_jets 1000000 --aspen_chunk_jets 50000 --output_root /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_name rrr_findanother_seed52_input_grad_lam1_mask0p30 --seed 52 --device cuda --num_workers 4 --feature_mode full --max_constits 128 --train_files_per_class 8 --val_files_per_class 1 --test_files_per_class 1 --n_train_jets 150000 --n_val_jets 50000 --n_test_jets 150000 --batch_size 512 --rrr_batch_size 128 --epochs 30 --lr 7e-4 --weight_decay 1e-5 --warmup_epochs 3 --embed_dim 128 --num_heads 8 --num_layers 6 --ff_dim 512 --dropout 0.1 --target_class HToBB --background_class ZJetsToNuNu --a_source input_grad --lambda_rrr 1 --mask_frac 0.30 --max_iterations 5 --attr_batch_size 128 --ig_steps 16 --smoothgrad_samples 16 --smoothgrad_sigma 0.10
+[info] run_dir=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30
+[info] device=cuda
+[info] classes:
+  - HToBB: 10 files
+  - HToCC: 10 files
+  - HToGG: 10 files
+  - HToWW2Q1L: 10 files
+  - HToWW4Q: 10 files
+  - TTBar: 10 files
+  - TTBarLep: 10 files
+  - WToQQ: 10 files
+  - ZJetsToNuNu: 10 files
+  - ZToQQ: 10 files
+[info] loading train/val/test splits
+[info] loaded jets train=150000 val=50000 test=150000
+[info] domain-prior mask coverage tokens=1769358/5898045 features=17693580/100266765
+========================================================================
+[iter] 1/5
+[iter] seed=1052
+[iter-train] ep=1 loss=1.2357 ce=1.2332 rrr=0.0025 val_acc=0.6220 val_auc=0.9310
+[iter-train] ep=2 loss=1.0483 ce=1.0458 rrr=0.0025 val_acc=0.6254 val_auc=0.9348
+[iter-train] ep=3 loss=1.0080 ce=1.0055 rrr=0.0025 val_acc=0.6388 val_auc=0.9403
+[iter-train] ep=4 loss=0.9631 ce=0.9605 rrr=0.0026 val_acc=0.6509 val_auc=0.9417
+[iter-train] ep=5 loss=0.9377 ce=0.9351 rrr=0.0026 val_acc=0.6770 val_auc=0.9466
+[iter-train] ep=6 loss=0.9192 ce=0.9167 rrr=0.0025 val_acc=0.6779 val_auc=0.9481
+[iter-train] ep=7 loss=0.9029 ce=0.9004 rrr=0.0025 val_acc=0.6715 val_auc=0.9479
+[iter-train] ep=8 loss=0.8912 ce=0.8889 rrr=0.0024 val_acc=0.6797 val_auc=0.9496
+[iter-train] ep=9 loss=0.8790 ce=0.8767 rrr=0.0023 val_acc=0.6790 val_auc=0.9492
+[iter-train] ep=10 loss=0.8693 ce=0.8669 rrr=0.0023 val_acc=0.6905 val_auc=0.9513
+[iter-train] ep=11 loss=0.8580 ce=0.8557 rrr=0.0023 val_acc=0.6985 val_auc=0.9525
+[iter-train] ep=12 loss=0.8472 ce=0.8449 rrr=0.0023 val_acc=0.6950 val_auc=0.9521
+[iter-train] ep=13 loss=0.8377 ce=0.8354 rrr=0.0023 val_acc=0.7022 val_auc=0.9532
+[iter-train] ep=14 loss=0.8270 ce=0.8247 rrr=0.0023 val_acc=0.6973 val_auc=0.9534
+[iter-train] ep=15 loss=0.8156 ce=0.8132 rrr=0.0024 val_acc=0.6977 val_auc=0.9529
+[iter-train] ep=16 loss=0.8046 ce=0.8022 rrr=0.0024 val_acc=0.6904 val_auc=0.9520
+[iter-train] ep=17 loss=0.7939 ce=0.7915 rrr=0.0024 val_acc=0.7062 val_auc=0.9549
+[iter-train] ep=18 loss=0.7813 ce=0.7788 rrr=0.0025 val_acc=0.7052 val_auc=0.9551
+[iter-train] ep=19 loss=0.7715 ce=0.7689 rrr=0.0026 val_acc=0.7027 val_auc=0.9547
+[iter-train] ep=20 loss=0.7615 ce=0.7588 rrr=0.0027 val_acc=0.7123 val_auc=0.9560
+[iter-train] ep=21 loss=0.7486 ce=0.7459 rrr=0.0027 val_acc=0.7075 val_auc=0.9554
+[iter-train] ep=22 loss=0.7378 ce=0.7350 rrr=0.0028 val_acc=0.7078 val_auc=0.9554
+[iter-train] ep=23 loss=0.7273 ce=0.7245 rrr=0.0028 val_acc=0.7045 val_auc=0.9549
+[iter-train] ep=24 loss=0.7168 ce=0.7138 rrr=0.0029 val_acc=0.7089 val_auc=0.9552
+[iter-train] ep=25 loss=0.7084 ce=0.7053 rrr=0.0030 val_acc=0.7077 val_auc=0.9550
+[iter-train] ep=26 loss=0.7016 ce=0.6984 rrr=0.0031 val_acc=0.7097 val_auc=0.9551
+[iter-train] ep=27 loss=0.6941 ce=0.6909 rrr=0.0032 val_acc=0.7095 val_auc=0.9553
+[iter-train] ep=28 loss=0.6894 ce=0.6862 rrr=0.0032 val_acc=0.7083 val_auc=0.9550
+[iter-train] ep=29 loss=0.6873 ce=0.6840 rrr=0.0033 val_acc=0.7096 val_auc=0.9552
+[iter-train] ep=30 loss=0.6859 ce=0.6826 rrr=0.0033 val_acc=0.7105 val_auc=0.9553
+[iter] done 1: test_acc=0.7103, test_auc=0.9554, aspen_strong3=0.6628
+========================================================================
+[iter] 2/5
+[iter] seed=2052
+[iter] computing full-dataset attributions source=input_grad
+[iter-train] ep=1 loss=1.2565 ce=1.2497 rrr=0.0068 val_acc=0.6164 val_auc=0.9322
+[iter-train] ep=2 loss=1.0659 ce=1.0548 rrr=0.0111 val_acc=0.6383 val_auc=0.9364
+[iter-train] ep=3 loss=1.0199 ce=1.0068 rrr=0.0131 val_acc=0.6419 val_auc=0.9388
+[iter-train] ep=4 loss=0.9772 ce=0.9634 rrr=0.0138 val_acc=0.6575 val_auc=0.9431
+[iter-train] ep=5 loss=0.9502 ce=0.9358 rrr=0.0144 val_acc=0.6736 val_auc=0.9461
+[iter-train] ep=6 loss=0.9340 ce=0.9194 rrr=0.0145 val_acc=0.6654 val_auc=0.9448
+[iter-train] ep=7 loss=0.9204 ce=0.9057 rrr=0.0146 val_acc=0.6832 val_auc=0.9485
+[iter-train] ep=8 loss=0.9069 ce=0.8919 rrr=0.0150 val_acc=0.6815 val_auc=0.9484
+[iter-train] ep=9 loss=0.8965 ce=0.8819 rrr=0.0147 val_acc=0.6815 val_auc=0.9487
+[iter-train] ep=10 loss=0.8877 ce=0.8728 rrr=0.0149 val_acc=0.6919 val_auc=0.9508
+[iter-train] ep=11 loss=0.8731 ce=0.8580 rrr=0.0151 val_acc=0.6865 val_auc=0.9505
+[iter-train] ep=12 loss=0.8627 ce=0.8476 rrr=0.0151 val_acc=0.6956 val_auc=0.9525
+[iter-train] ep=13 loss=0.8528 ce=0.8375 rrr=0.0153 val_acc=0.6910 val_auc=0.9518
+[iter-train] ep=14 loss=0.8411 ce=0.8257 rrr=0.0154 val_acc=0.6946 val_auc=0.9522
+[iter-train] ep=15 loss=0.8313 ce=0.8156 rrr=0.0157 val_acc=0.6980 val_auc=0.9536
+[iter-train] ep=16 loss=0.8209 ce=0.8049 rrr=0.0160 val_acc=0.6952 val_auc=0.9521
+[iter-train] ep=17 loss=0.8098 ce=0.7936 rrr=0.0162 val_acc=0.7005 val_auc=0.9537
+[iter-train] ep=18 loss=0.7969 ce=0.7806 rrr=0.0163 val_acc=0.7001 val_auc=0.9540
+[iter-train] ep=19 loss=0.7878 ce=0.7712 rrr=0.0166 val_acc=0.7027 val_auc=0.9543
+[iter-train] ep=20 loss=0.7767 ce=0.7598 rrr=0.0169 val_acc=0.7045 val_auc=0.9544
+[iter-train] ep=21 loss=0.7662 ce=0.7489 rrr=0.0173 val_acc=0.7087 val_auc=0.9552
+[iter-train] ep=22 loss=0.7555 ce=0.7380 rrr=0.0175 val_acc=0.7047 val_auc=0.9545
+[iter-train] ep=23 loss=0.7451 ce=0.7272 rrr=0.0178 val_acc=0.7027 val_auc=0.9544
+[iter-train] ep=24 loss=0.7340 ce=0.7159 rrr=0.0181 val_acc=0.7036 val_auc=0.9542
+[iter-train] ep=25 loss=0.7261 ce=0.7076 rrr=0.0185 val_acc=0.7048 val_auc=0.9546
+[iter-train] ep=26 loss=0.7192 ce=0.7003 rrr=0.0189 val_acc=0.7052 val_auc=0.9547
+[iter-train] ep=27 loss=0.7128 ce=0.6940 rrr=0.0189 val_acc=0.7052 val_auc=0.9546
+[iter-train] ep=28 loss=0.7079 ce=0.6890 rrr=0.0189 val_acc=0.7041 val_auc=0.9544
+[iter-train] ep=29 loss=0.7061 ce=0.6869 rrr=0.0192 val_acc=0.7043 val_auc=0.9544
+[iter-train] ep=30 loss=0.7044 ce=0.6853 rrr=0.0191 val_acc=0.7040 val_auc=0.9544
+[iter] done 2: test_acc=0.7026, test_auc=0.9540, aspen_strong3=0.6797
+========================================================================
+[iter] 3/5
+[iter] seed=3052
+[iter] computing full-dataset attributions source=input_grad
+[iter-train] ep=1 loss=1.2469 ce=1.2402 rrr=0.0066 val_acc=0.6355 val_auc=0.9333
+[iter-train] ep=2 loss=1.0588 ce=1.0483 rrr=0.0105 val_acc=0.6495 val_auc=0.9390
+[iter-train] ep=3 loss=1.0178 ce=1.0056 rrr=0.0122 val_acc=0.6556 val_auc=0.9394
+[iter-train] ep=4 loss=0.9781 ce=0.9648 rrr=0.0133 val_acc=0.6561 val_auc=0.9418
+[iter-train] ep=5 loss=0.9511 ce=0.9374 rrr=0.0137 val_acc=0.6778 val_auc=0.9463
+[iter-train] ep=6 loss=0.9343 ce=0.9203 rrr=0.0140 val_acc=0.6791 val_auc=0.9476
+[iter-train] ep=7 loss=0.9202 ce=0.9062 rrr=0.0140 val_acc=0.6823 val_auc=0.9479
+[iter-train] ep=8 loss=0.9067 ce=0.8925 rrr=0.0142 val_acc=0.6775 val_auc=0.9485
+[iter-train] ep=9 loss=0.8950 ce=0.8809 rrr=0.0142 val_acc=0.6883 val_auc=0.9507
+[iter-train] ep=10 loss=0.8834 ce=0.8691 rrr=0.0143 val_acc=0.6922 val_auc=0.9512
+[iter-train] ep=11 loss=0.8719 ce=0.8574 rrr=0.0145 val_acc=0.6733 val_auc=0.9494
+[iter-train] ep=12 loss=0.8615 ce=0.8467 rrr=0.0148 val_acc=0.6766 val_auc=0.9511
+[iter-train] ep=13 loss=0.8499 ce=0.8351 rrr=0.0148 val_acc=0.6939 val_auc=0.9525
+[iter-train] ep=14 loss=0.8427 ce=0.8279 rrr=0.0148 val_acc=0.6926 val_auc=0.9522
+[iter-train] ep=15 loss=0.8327 ce=0.8176 rrr=0.0151 val_acc=0.6851 val_auc=0.9517
+[iter-train] ep=16 loss=0.8191 ce=0.8036 rrr=0.0154 val_acc=0.6929 val_auc=0.9529
+[iter-train] ep=17 loss=0.8120 ce=0.7965 rrr=0.0156 val_acc=0.7052 val_auc=0.9548
+[iter-train] ep=18 loss=0.7988 ce=0.7827 rrr=0.0161 val_acc=0.7071 val_auc=0.9556
+[iter-train] ep=19 loss=0.7878 ce=0.7716 rrr=0.0162 val_acc=0.7056 val_auc=0.9550
+[iter-train] ep=20 loss=0.7754 ce=0.7587 rrr=0.0167 val_acc=0.7072 val_auc=0.9552
+[iter-train] ep=21 loss=0.7656 ce=0.7486 rrr=0.0170 val_acc=0.7051 val_auc=0.9554
+[iter-train] ep=22 loss=0.7538 ce=0.7362 rrr=0.0176 val_acc=0.7066 val_auc=0.9552
+[iter-train] ep=23 loss=0.7441 ce=0.7258 rrr=0.0183 val_acc=0.7114 val_auc=0.9560
+[iter-train] ep=24 loss=0.7344 ce=0.7159 rrr=0.0185 val_acc=0.7107 val_auc=0.9555
+[iter-train] ep=25 loss=0.7248 ce=0.7056 rrr=0.0192 val_acc=0.7125 val_auc=0.9560
+[iter-train] ep=26 loss=0.7178 ce=0.6983 rrr=0.0195 val_acc=0.7127 val_auc=0.9563
+[iter-train] ep=27 loss=0.7105 ce=0.6909 rrr=0.0196 val_acc=0.7129 val_auc=0.9563
+[iter-train] ep=28 loss=0.7074 ce=0.6875 rrr=0.0200 val_acc=0.7138 val_auc=0.9563
+[iter-train] ep=29 loss=0.7036 ce=0.6834 rrr=0.0202 val_acc=0.7147 val_auc=0.9563
+[iter-train] ep=30 loss=0.7008 ce=0.6807 rrr=0.0201 val_acc=0.7142 val_auc=0.9563
+[iter] done 3: test_acc=0.7118, test_auc=0.9563, aspen_strong3=0.5113
+========================================================================
+[iter] 4/5
+[iter] seed=4052
+[iter] computing full-dataset attributions source=input_grad
+[iter-train] ep=1 loss=1.2536 ce=1.2472 rrr=0.0064 val_acc=0.6301 val_auc=0.9319
+[iter-train] ep=2 loss=1.0671 ce=1.0571 rrr=0.0100 val_acc=0.6426 val_auc=0.9374
+[iter-train] ep=3 loss=1.0239 ce=1.0122 rrr=0.0117 val_acc=0.6509 val_auc=0.9398
+[iter-train] ep=4 loss=0.9830 ce=0.9703 rrr=0.0127 val_acc=0.6631 val_auc=0.9425
+[iter-train] ep=5 loss=0.9560 ce=0.9428 rrr=0.0132 val_acc=0.6663 val_auc=0.9443
+[iter-train] ep=6 loss=0.9356 ce=0.9224 rrr=0.0132 val_acc=0.6563 val_auc=0.9430
+[iter-train] ep=7 loss=0.9217 ce=0.9082 rrr=0.0135 val_acc=0.6794 val_auc=0.9488
+[iter-train] ep=8 loss=0.9083 ce=0.8947 rrr=0.0136 val_acc=0.6839 val_auc=0.9496
+[iter-train] ep=9 loss=0.8945 ce=0.8808 rrr=0.0137 val_acc=0.6884 val_auc=0.9506
+[iter-train] ep=10 loss=0.8832 ce=0.8694 rrr=0.0138 val_acc=0.6837 val_auc=0.9496
+[iter-train] ep=11 loss=0.8727 ce=0.8587 rrr=0.0141 val_acc=0.6952 val_auc=0.9520
+[iter-train] ep=12 loss=0.8614 ce=0.8473 rrr=0.0142 val_acc=0.6931 val_auc=0.9519
+[iter-train] ep=13 loss=0.8507 ce=0.8363 rrr=0.0144 val_acc=0.6926 val_auc=0.9517
+[iter-train] ep=14 loss=0.8391 ce=0.8246 rrr=0.0145 val_acc=0.6931 val_auc=0.9523
+[iter-train] ep=15 loss=0.8316 ce=0.8169 rrr=0.0147 val_acc=0.6989 val_auc=0.9534
+[iter-train] ep=16 loss=0.8191 ce=0.8041 rrr=0.0150 val_acc=0.7025 val_auc=0.9543
+[iter-train] ep=17 loss=0.8081 ce=0.7929 rrr=0.0152 val_acc=0.7026 val_auc=0.9542
+[iter-train] ep=18 loss=0.7966 ce=0.7811 rrr=0.0155 val_acc=0.6980 val_auc=0.9539
+[iter-train] ep=19 loss=0.7847 ce=0.7688 rrr=0.0159 val_acc=0.7049 val_auc=0.9547
+[iter-train] ep=20 loss=0.7741 ce=0.7576 rrr=0.0164 val_acc=0.7032 val_auc=0.9552
+[iter-train] ep=21 loss=0.7629 ce=0.7464 rrr=0.0165 val_acc=0.7070 val_auc=0.9556
+[iter-train] ep=22 loss=0.7531 ce=0.7362 rrr=0.0169 val_acc=0.7065 val_auc=0.9553
+[iter-train] ep=23 loss=0.7426 ce=0.7251 rrr=0.0174 val_acc=0.7051 val_auc=0.9547
+[iter-train] ep=24 loss=0.7321 ce=0.7145 rrr=0.0176 val_acc=0.7041 val_auc=0.9543
+[iter-train] ep=25 loss=0.7228 ce=0.7049 rrr=0.0180 val_acc=0.7065 val_auc=0.9551
+[iter-train] ep=26 loss=0.7158 ce=0.6976 rrr=0.0182 val_acc=0.7045 val_auc=0.9546
+[iter-train] ep=27 loss=0.7103 ce=0.6919 rrr=0.0184 val_acc=0.7053 val_auc=0.9547
+[iter-train] ep=28 loss=0.7060 ce=0.6873 rrr=0.0187 val_acc=0.7057 val_auc=0.9547
+[iter-train] ep=29 loss=0.7006 ce=0.6820 rrr=0.0186 val_acc=0.7059 val_auc=0.9548
+[iter-train] ep=30 loss=0.7002 ce=0.6815 rrr=0.0187 val_acc=0.7051 val_auc=0.9547
+[iter] done 4: test_acc=0.7051, test_auc=0.9545, aspen_strong3=0.7345
+========================================================================
+[iter] 5/5
+[iter] seed=5052
+[iter] computing full-dataset attributions source=input_grad
+[iter-train] ep=1 loss=1.2383 ce=1.2322 rrr=0.0061 val_acc=0.6287 val_auc=0.9327
+[iter-train] ep=2 loss=1.0594 ce=1.0497 rrr=0.0097 val_acc=0.6469 val_auc=0.9390
+[iter-train] ep=3 loss=1.0179 ce=1.0067 rrr=0.0112 val_acc=0.6075 val_auc=0.9302
+[iter-train] ep=4 loss=0.9757 ce=0.9633 rrr=0.0123 val_acc=0.6618 val_auc=0.9437
+[iter-train] ep=5 loss=0.9536 ce=0.9408 rrr=0.0128 val_acc=0.6715 val_auc=0.9459
+[iter-train] ep=6 loss=0.9342 ce=0.9212 rrr=0.0130 val_acc=0.6673 val_auc=0.9459
+[iter-train] ep=7 loss=0.9197 ce=0.9063 rrr=0.0134 val_acc=0.6752 val_auc=0.9457
+[iter-train] ep=8 loss=0.9068 ce=0.8934 rrr=0.0134 val_acc=0.6789 val_auc=0.9487
+[iter-train] ep=9 loss=0.8965 ce=0.8831 rrr=0.0134 val_acc=0.6841 val_auc=0.9502
+[iter-train] ep=10 loss=0.8850 ce=0.8714 rrr=0.0136 val_acc=0.6792 val_auc=0.9483
+[iter-train] ep=11 loss=0.8745 ce=0.8609 rrr=0.0136 val_acc=0.6884 val_auc=0.9511
+[iter-train] ep=12 loss=0.8636 ce=0.8498 rrr=0.0138 val_acc=0.6820 val_auc=0.9511
+[iter-train] ep=13 loss=0.8530 ce=0.8392 rrr=0.0139 val_acc=0.6925 val_auc=0.9522
+[iter-train] ep=14 loss=0.8429 ce=0.8285 rrr=0.0144 val_acc=0.6998 val_auc=0.9527
+[iter-train] ep=15 loss=0.8329 ce=0.8183 rrr=0.0146 val_acc=0.7002 val_auc=0.9529
+[iter-train] ep=16 loss=0.8229 ce=0.8085 rrr=0.0144 val_acc=0.6997 val_auc=0.9534
+[iter-train] ep=17 loss=0.8117 ce=0.7968 rrr=0.0150 val_acc=0.7006 val_auc=0.9541
+[iter-train] ep=18 loss=0.8011 ce=0.7860 rrr=0.0152 val_acc=0.7033 val_auc=0.9542
+[iter-train] ep=19 loss=0.7900 ce=0.7743 rrr=0.0158 val_acc=0.7028 val_auc=0.9546
+[iter-train] ep=20 loss=0.7796 ce=0.7638 rrr=0.0158 val_acc=0.7075 val_auc=0.9552
+[iter-train] ep=21 loss=0.7673 ce=0.7512 rrr=0.0160 val_acc=0.7020 val_auc=0.9542
+[iter-train] ep=22 loss=0.7562 ce=0.7398 rrr=0.0164 val_acc=0.7079 val_auc=0.9553
+[iter-train] ep=23 loss=0.7468 ce=0.7300 rrr=0.0168 val_acc=0.7059 val_auc=0.9546
+[iter-train] ep=24 loss=0.7358 ce=0.7187 rrr=0.0172 val_acc=0.7070 val_auc=0.9548
+[iter-train] ep=25 loss=0.7282 ce=0.7107 rrr=0.0175 val_acc=0.7066 val_auc=0.9546
+[iter-train] ep=26 loss=0.7197 ce=0.7017 rrr=0.0179 val_acc=0.7078 val_auc=0.9546
+[iter-train] ep=27 loss=0.7146 ce=0.6968 rrr=0.0178 val_acc=0.7048 val_auc=0.9543
+[iter-train] ep=28 loss=0.7094 ce=0.6913 rrr=0.0181 val_acc=0.7050 val_auc=0.9544
+[iter-train] ep=29 loss=0.7058 ce=0.6878 rrr=0.0180 val_acc=0.7062 val_auc=0.9546
+[iter-train] ep=30 loss=0.7050 ce=0.6869 rrr=0.0181 val_acc=0.7065 val_auc=0.9545
+[iter] done 5: test_acc=0.7051, test_auc=0.9542, aspen_strong3=0.6472
+[done] outputs:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/config.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iteration_summary.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_01/jetclass_test_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_01/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_02/jetclass_test_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_02/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_03/jetclass_test_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_03/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_04/jetclass_test_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_04/aspen_shift_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_05/jetclass_test_metrics.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iter_05/aspen_shift_metrics.json
+[done] outputs:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/config.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/iteration_summary.csv
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/rrr_findanother_seed52_input_grad_lam1_mask0p30/summary.json

@@ -1,0 +1,34 @@
+[preflight] WORKDIR=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] PROJECT_ROOT=/home/ryreu/atlas/CompPhys_FinalProject
+[preflight] SCRIPT=/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/probe_aspen_openjets_h5.py
+[preflight] DATA_DIR=/home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+[preflight] python: /home/ryreu/miniconda3/envs/atlas_kd/bin/python3
+[preflight] module check OK
+============================================================
+AspenOpenJets H5 Probe
+Job ID: 21207734
+Node: skl-a-11
+Data: /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets
+Run: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster
+============================================================
+ python3 -u /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/probe_aspen_openjets_h5.py --data_dir /home/ryreu/atlas/CompPhys_Final/data/AspenOpenJets --glob Run\*.h5 --max_files 0 --sample_jets_per_file 10000 --split_fractions 0.8\,0.1\,0.1 --seed 52 --output_dir /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results --run_name aspen_probe_cluster
+========================================================================
+AspenOpenJets probe complete
+Run directory: /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster
+Files inspected: 4
+Total jets (all inspected files): 8299802
+Keys found: PFCands, event_info, jet_kinematics, jet_tagging
+Explicit labels present: False (keys: [])
+Constituent count/jet (sampled): mean=47.53, p95=81.00, max=138
+Recommended mask: mask = (abs(PFCands[..., :4]).sum(axis=-1) > 0)
+Wrote:
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/probe_summary.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/schema_summary.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/loader_recipe.json
+  - /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/file_manifest.csv
+========================================================================
+[done] Wrote:
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/probe_summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/schema_summary.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/loader_recipe.json
+  /home/ryreu/atlas/CompPhys_FinalProject/restart_studies/results/aspen_probe_cluster/file_manifest.csv

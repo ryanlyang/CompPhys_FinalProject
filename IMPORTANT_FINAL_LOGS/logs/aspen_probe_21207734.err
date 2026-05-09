@@ -1,0 +1,2 @@
+/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/probe_aspen_openjets_h5.py:86: RuntimeWarning: invalid value encountered in subtract
+  var = np.maximum(self.sum_sq / self.count_rows - np.square(mean), 0.0)

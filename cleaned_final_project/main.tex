@@ -1,0 +1,147 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{siunitx}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[hidelinks]{hyperref}
+\usepackage{microtype}
+
+\sisetup{
+  detect-all,
+  round-mode=places,
+  round-precision=4
+}
+
+\title{Can Interpretability-Guided Training Reduce JetClass-to-AspenOpenJets Domain Shift?}
+\author{Ryan Yang\\Brown University}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Transformer-based jet taggers perform strongly on simulated benchmarks, but their behavior under a simulation-to-real-data shift is less certain. This project asks whether interpretability-guided training can reduce the apparent domain shift between a JetClass-trained classifier and unlabeled AspenOpenJets data while preserving useful in-domain performance. I trained a 10-class transformer jet classifier on JetClass, calibrated unlabeled shift metrics on controlled corruptions of the labeled JetClass test set, evaluated the trained models on AspenOpenJets, and then tested a right-for-the-right-reasons style intervention that penalizes input gradients on attribution-selected features. Across five baseline seeds, the corrected JetClass model achieved $0.7459\pm0.0073$ accuracy and $0.9651\pm0.0019$ macro AUC. AspenOpenJets evaluation showed a large shift in the model's prediction distribution. In a focused 24-configuration interpretability-guided training sweep, all configurations improved the main Aspen shift summary relative to the baseline seed. The best configuration reduced the strong shift summary from $0.6199$ to $0.4701$, at the cost of reducing JetClass accuracy from $0.7425$ to $0.6937$ for the seed-52 comparison. The result supports the central hypothesis qualitatively: attribution-guided training can change model reliance in a direction that reduces unlabeled target-domain shift, but it introduces a measurable accuracy-robustness tradeoff.
+\end{abstract}
+
+\section{Introduction}
+
+The precise computational physics question for this project is:
+\begin{quote}
+If a transformer jet tagger is trained on labeled simulated JetClass jets, can right-for-the-right-reasons gradient regularization reduce its prediction-distribution shift on unlabeled real CMS-derived AspenOpenJets jets, as measured by calibrated output-space shift diagnostics, without destroying its held-out JetClass accuracy?
+\end{quote}
+
+To answer this question, I train JetClass classifiers, stress-test them with controlled corruptions where labels remain known, use those corruptions to rank unlabeled shift metrics, evaluate the same models on AspenOpenJets, and then compare baseline models to attribution-guided retrained models on the joint tradeoff between JetClass test accuracy and AspenOpenJets shift.
+
+Jet tagging is the task of identifying the particle or decay process that initiated a reconstructed jet. It is central to LHC analyses because many signatures of Higgs bosons, electroweak bosons, top quarks, and new particles appear as jets with different internal substructure \cite{larkoski2017jet,kogler2019jet}. Modern deep learning models, especially particle-cloud and transformer architectures, perform extremely well on simulated jet benchmarks \cite{qu2022particle}. However, a strong model on simulation can still learn features that are specific to the simulation, reconstruction, or labeling conventions rather than features that transfer to real data.
+
+This project studies that issue computationally. JetClass provides a large labeled simulated benchmark for 10-class jet tagging \cite{qu2022particle}. AspenOpenJets provides a large machine-learning-ready dataset derived from CMS 2016 Open Data \cite{amram2025aspen}. AspenOpenJets is not labeled in a way that gives direct supervised accuracy for the JetClass classes, so the project cannot simply train on one dataset and report accuracy on the other. Instead, I first calibrate unlabeled shift metrics on controlled JetClass corruptions, where labels are known, and then use those metrics on AspenOpenJets as target-domain diagnostics.
+
+A major restart occurred between the preliminary report and the final analysis. The preliminary results were affected by a labeling and evaluation mismatch that made some metrics unreliable. The final results in this paper come from a clean reimplementation with explicit label-mapping checks, replay tests, masking parity checks, and five-seed aggregation. This is why the numerical results reported here differ from the preliminary report.
+
+\section{Background}
+
+\subsection{Jet Tagging and Modern Jet Representations}
+
+Jet tagging is difficult because the objects being classified are not elementary detector hits, but clustered sprays of final-state particles produced by parton showering and hadronization. In boosted regimes, the decay products of heavy objects such as $W$, $Z$, Higgs, or top particles can merge into one jet, so the relevant information is encoded in the jet's internal substructure. Reviews of jet substructure emphasize that useful taggers must separate physically meaningful radiation patterns from ordinary QCD jets while remaining robust to detector effects, pileup, and simulation mismodeling \cite{larkoski2017jet,kogler2019jet}.
+
+Before deep learning became dominant, jet-substructure taggers often used physics-motivated observables. N-subjettiness measures how consistent a jet is with a chosen number of hard subjets, making ratios such as $\tau_{21}$ and $\tau_{32}$ useful for boosted boson and top tagging \cite{thaler2011nsubjettiness,thaler2012nsubjettiness}. Soft Drop grooming removes soft wide-angle radiation and helps stabilize jet mass and related observables against contamination from underlying event and pileup \cite{larkoski2014softdrop}. These ideas matter here because they define what a transferable jet feature should look like: robust substructure information should be more reliable under simulation-to-real-data shift than detector- or generator-specific artifacts.
+
+Machine-learning jet taggers have moved from hand-designed observables and jet images toward constituent-level architectures. Jet-image studies showed that computer-vision methods could learn nontrivial discriminants from calorimeter-like representations \cite{cogan2015jetimages,deoliveira2016jetimages}. Later models used the particle constituents more directly. Set-based architectures such as Energy Flow Networks and Particle Flow Networks made permutation-invariant particle representations central to the field \cite{komiske2019energy}. ParticleNet then treated jets as particle clouds and used dynamic graph convolutions to achieve strong performance on benchmark tagging tasks \cite{qu2020particlenet}. The Particle Transformer further improved constituent-level tagging by combining attention with pairwise particle-interaction information \cite{qu2022particle}. These developments motivate the model choice in this project: a transformer-style classifier can learn strong in-domain JetClass discrimination, but its flexibility also makes it possible to learn simulation-specific shortcuts.
+
+\subsection{JetClass and AspenOpenJets as Source and Target Domains}
+
+JetClass is a large simulated benchmark with 10 jet categories, including Higgs, vector boson, top, and quark/gluon jets \cite{qu2022particle}. The full public benchmark is much larger than the subset used in this course project: it provides 100 million training jets, 5 million validation jets, and 20 million test jets for supervised learning at scale. The original Particle Transformer study reported strong results on this benchmark, showing that constituent-level attention models are highly effective when trained and tested within the same simulated data distribution.
+
+AspenOpenJets plays a different role. It contains approximately 178 million high-$p_T$ AK8 jets derived from CMS 2016 Open Data and is packaged for machine-learning use \cite{amram2025aspen}. It includes constituent-level information and higher-level jet-substructure quantities, but it is not a supervised JetClass-style benchmark. It is useful here because it provides a real-data target domain rather than another simulated benchmark. It is also intrinsically harder to use: the jets are unlabeled for the JetClass 10-class task, the sample composition is not balanced like JetClass, and the detector/reconstruction chain differs from the fast-simulation setting used by JetClass.
+
+This pairing creates a source-target problem rather than a standard supervised benchmark. JetClass provides labels and controlled evaluation, while AspenOpenJets provides realistic unlabeled target data. The goal is therefore not simply to maximize JetClass accuracy, but to ask whether the trained model's behavior remains stable when applied to real CMS-derived jets. That motivates using unlabeled prediction-space diagnostics and treating any AspenOpenJets result as a shift measurement rather than a direct accuracy measurement.
+
+\subsection{Interpretability Methods}
+
+I used three attribution methods. Input gradients measure the derivative of a chosen model score with respect to the input features, following the general saliency-map idea that local sensitivity can be interpreted as a feature-importance signal \cite{simonyan2014deep}. Integrated Gradients average such gradients along a path from a baseline input to the real input \cite{sundararajan2017axiomatic}. SmoothGrad averages noisy input-gradient explanations to reduce high-frequency attribution noise \cite{smilkov2017smoothgrad}. In a constituent-level jet model, these methods ask related but distinct questions: which particle features locally affect the score, which features matter relative to a baseline, and which sensitivities remain stable under local noise.
+
+The training intervention is based on the right-for-the-right-reasons (RRR) idea of penalizing gradients in regions where the model should not rely strongly \cite{ross2017right}. Follow-up work on explanation penalties and attribution priors shows that attributions can be used not only to audit models, but also to impose prior knowledge during training \cite{rieger2020interpretations,erion2021improving}. Here, instead of expert annotations, the masks are constructed from domain-prior features and then expanded using model attributions from previous training iterations. This turns interpretability into a training signal: the model is encouraged to find alternative explanations that rely less on previously identified features.
+
+This is not automatic evidence that every attribution is faithful. Raw gradients can be noisy or saturated, Integrated Gradients depends on a baseline choice, and SmoothGrad improves local stability without guaranteeing causal importance. For that reason, I treat attribution quality as something to test rather than assume. The targeted-versus-random masking study in the results section checks whether attribution-selected features affect the model more than randomly selected features at matched masking budgets.
+
+\subsection{Unlabeled Domain Shift}
+
+The theoretical domain-adaptation setting explains why AspenOpenJets is hard to evaluate. Target error depends not only on source-domain performance, but also on the discrepancy between source and target distributions and on whether there exists a model that performs well on both domains \cite{bendavid2010theory}. Domain-adversarial training is one common response to this problem: it tries to learn representations that are predictive for the source task while being less informative about which domain an example came from \cite{ganin2015unsupervised}. This project takes a different route. Rather than training directly on AspenOpenJets, I use source-side corruptions and explanation-guided penalties to test whether the model can be made less sensitive to source-target mismatch.
+
+In this project, the target data are unlabeled, so I cannot directly estimate target error. Instead, I can measure how much the trained model's prediction distribution changes between clean JetClass and AspenOpenJets. The broader dataset-shift literature cautions that detecting a shift and predicting its performance impact are different tasks. Shift-detection studies show that black-box prediction summaries can reveal distribution changes, but they do not always map reliably to accuracy loss \cite{rabanser2019failing,guillory2021predicting}. Uncertainty and confidence metrics are also known to behave differently under dataset shift than under in-domain testing \cite{ovadia2019trust}. This is why the final analysis reports direct unlabeled shift metrics, while rejecting the attempted pseudo-accuracy conversion as too extrapolation-sensitive.
+
+\section{Methods}
+
+\subsection{Baseline Classifier}
+
+The baseline is a transformer classifier trained on JetClass constituent-level features. Each run used 150,000 training jets, 50,000 validation jets, and 150,000 test jets, with up to 128 constituents per jet. All JetClass training, RRR training, and AspenOpenJets inference jobs were run on RIT Research Computing Services A100 GPU resources \cite{ritrc2026}. The model was trained with 10-class cross entropy,
+\begin{equation}
+L_{\mathrm{CE}} = -\frac{1}{N}\sum_{i=1}^{N}\sum_{c=1}^{C} y_{ic}\log \hat{p}_{ic},
+\end{equation}
+where $y_{ic}$ is the one-hot class label and $\hat{p}_{ic}$ is the predicted probability for class $c$.
+
+The clean baseline was run for five random seeds, $\{41,52,63,74,85\}$. For the final analysis, trainer and post-training inference metrics were checked for exact consistency after checkpoint reload.
+
+\subsection{Unlabeled Shift Metrics}
+
+For a dataset $A$, define the mean predicted class-probability vector as
+\begin{equation}
+\bar{p}_{A} = \frac{1}{N_A}\sum_{i\in A}\hat{p}(x_i).
+\end{equation}
+For clean JetClass predictions and shifted predictions, I measured five unlabeled diagnostics: probability $L^1$ drift, top-1 prediction histogram drift, Jensen-Shannon divergence of the mean class distributions \cite{lin1991divergence}, confidence drop, and entropy shift. Predictive entropy is
+\begin{equation}
+H(x) = -\sum_{c=1}^{C}\hat{p}_c(x)\log \hat{p}_c(x).
+\end{equation}
+The strongest three metrics in the final analysis were probability $L^1$ drift, top-1 drift, and class-distribution Jensen-Shannon divergence. I report their average as the ``strong3'' shift summary in the intervention study.
+
+\subsection{Controlled Corruptions}
+
+To validate unlabeled shift metrics, I applied controlled corruptions to JetClass test inputs and compared each unlabeled metric to the true supervised degradation. The corruptions included transverse-momentum noise, angular jitter, constituent dropout, merging-like effects, and global scale changes. Because JetClass labels are known, each corruption gives both an unlabeled shift value and a true $\Delta$AUC or $\Delta$accuracy. This allows the shift metrics to be ranked before they are used on unlabeled AspenOpenJets.
+
+\subsection{Interpretability-Guided Training}
+
+For RRR-style training \cite{ross2017right}, I used
+\begin{equation}
+L = L_{\mathrm{CE}} + \lambda_{\mathrm{RRR}}\left\|A\odot\nabla_x s_\theta(x)\right\|_2^2,
+\end{equation}
+where $s_\theta(x)$ is the model score used for the gradient penalty, $A$ is a binary mask selecting features to discourage reliance on, and $\lambda_{\mathrm{RRR}}$ controls the strength of the penalty.
+
+The intervention was run in a ``find another explanation'' style. The first mask uses domain-prior channels expected to be less stable across domains. Later masks are expanded from full-training-set attributions computed from the previous trained model. Each hyperparameter configuration therefore required five complete model trainings from scratch, not one training run. After each trained model, the pipeline also evaluated JetClass test performance, ran AspenOpenJets inference, and, for later iterations, computed full-training-set attribution masks before the next model was trained. I tested three attribution sources for mask construction: input gradients, Integrated Gradients \cite{sundararajan2017axiomatic}, and SmoothGrad \cite{smilkov2017smoothgrad}. I initially intended to run a broader sweep including larger $\lambda_{\mathrm{RRR}}$ values, but the nested five-training procedure made the full grid too expensive for the available project time. The final reported sweep was therefore restricted to $\lambda_{\mathrm{RRR}}\in\{1,10\}$ and mask fractions $\{0.05,0.10,0.20,0.30\}$ for all three attribution sources, giving 24 focused configurations.
+
+\section{Reliability Checks}
+
+Several controls were built into the final pipeline.
+
+First, all clean JetClass results were rerun over five seeds. Second, checkpoint replay was tested by reloading the best checkpoint and reproducing validation/test behavior. Third, class balance, label ordering, and split overlap were checked. Fourth, interpretability masking was tested against random masking at exactly matched masking budgets. Fifth, AspenOpenJets inference was sanity-checked for finite and normalized probability outputs, expected sample size, and consistency with the stored clean/corruption references.
+
+The most important limitation is that AspenOpenJets does not provide labels for the JetClass 10-class task. Therefore, no claim in this paper should be read as a measured AspenOpenJets accuracy. I attempted to calibrate the unlabeled shift metrics into a pseudo-accuracy drop using controlled JetClass corruptions, but that conversion was too sensitive to extrapolation and is not used as a reported result. The Aspen results should instead be read as unlabeled prediction-distribution shift diagnostics. The sanity checks support that the pipeline is functioning correctly, but they do not remove the fundamental uncertainty of evaluating real CMS-derived data without labels.
+
+\input{results_section_draft}
+
+\section{Discussion}
+
+The corrected baseline confirms that a compact transformer trained on a relatively small subset of JetClass can learn a strong in-domain classifier, though it is below the performance of the full-scale Particle Transformer results reported in the JetClass paper \cite{qu2022particle}. That is expected: this project used 150,000 training jets per seed, while JetClass was designed as a much larger benchmark. The goal here was not to reproduce state-of-the-art JetClass accuracy, but to create a controlled, reproducible setup for studying shift and interpretability-guided training.
+
+The AspenOpenJets results show that the simulation-to-real-data shift is large. The strongest claim supported by the data is not that the model has a known low accuracy on AspenOpenJets, since labels are unavailable. The stronger and safer claim is that the prediction distribution changes substantially and consistently across seeds. The pseudo-accuracy mapping was the least successful part of the analysis. It was useful as a diagnostic exercise on controlled JetClass corruptions, where true labels made calibration possible, but it became too fragile on AspenOpenJets because the target points often lay outside the calibration range. I therefore do not report pseudo-accuracy values as final results. The conclusion is based on direct unlabeled shift metrics, not on a claimed AspenOpenJets accuracy.
+
+The RRR-style intervention supports the qualitative hypothesis of the project. Across all 24 configurations in the focused sweep, the strong3 Aspen shift summary improved relative to the seed-52 baseline. The best configuration used SmoothGrad masks with $\lambda_{\mathrm{RRR}}=10$ and mask fraction $0.05$, reducing strong3 from $0.6199$ to $0.4701$. This came with a JetClass accuracy drop from $0.7425$ to $0.6937$. That is a meaningful tradeoff, not a free improvement. A less aggressive input-gradient configuration, $\lambda_{\mathrm{RRR}}=1$ and mask fraction $0.30$, gave a smaller shift reduction but preserved more JetClass accuracy. This is exactly the kind of tradeoff the project was designed to expose.
+
+However, this should not be overstated as a demonstrated improvement in real-data classification accuracy. The strongest supported conclusion is that the intervention reduces several calibrated prediction-distribution shift metrics between JetClass and AspenOpenJets. That is evidence in the right direction, but it is not the same as measuring accuracy on labeled real collision data. A fully convincing claim about improved real-test-data performance would require a larger study with stronger target-domain validation: substantially more AspenOpenJets data, better real-data or weak-label performance proxies, and enough research compute to process terabyte-scale samples and repeat the best configurations across multiple seeds. Those requirements are beyond the scope and resources of this course project, but the present results identify a plausible strategy worth testing at that larger scale.
+
+The computational cost of the find-another strategy explains why I narrowed the hyperparameter range. A single point in the sweep corresponds to five separate from-scratch trainings, five JetClass test evaluations, five AspenOpenJets inference passes, and up to four full-training-set attribution passes for constructing the next mask. Integrated Gradients and SmoothGrad worked well for post-training attribution but were especially expensive inside this loop. I was not able to use them directly as in-training regularizers in the same way as input gradients, because that would require multiple backward-style attribution computations inside each optimization step. That was too slow for the available project timeline. However, they were still implemented and tested as mask-construction methods: they identify features after a model is trained, and those masks are then used by the next input-gradient-regularized training iteration. This preserved the main scientific idea while keeping the training computationally feasible.
+
+The sanity checks are important for interpreting this limitation. They showed that the large AspenOpenJets shift is unlikely to be explained by a simple software error such as loading the wrong checkpoint, using a different label ordering, producing invalid probabilities, or replaying corruption metrics incorrectly. Therefore, the failure of the pseudo-accuracy conversion should be understood as a limitation of the calibration strategy, not as evidence that the pipeline itself was broken.
+
+\section{Conclusion}
+
+The final corrected analysis answers the project question in a qualified but positive way. Interpretability-guided training did not eliminate the JetClass-to-AspenOpenJets shift, and it did reduce in-domain JetClass performance. However, it consistently moved the completed models toward lower unlabeled AspenOpenJets shift metrics. This means the method is changing the model in the intended direction, rather than merely adding noise or regularization without effect.
+
+The main result is therefore an accuracy-robustness tradeoff measured through unlabeled target-domain diagnostics: gradient-regularized, attribution-guided training can reduce apparent simulation-to-real-data shift, but the best operating point depends on how much in-domain performance one is willing to give up. Future work should expand the hyperparameter range beyond the focused sweep used here, repeat the best configurations over five seeds, evaluate much larger AspenOpenJets samples, develop better target-domain validation metrics, and test methods that use unlabeled target-domain information directly during training.
+
+\bibliographystyle{unsrtnat}
+\bibliography{main}
+
+\end{document}

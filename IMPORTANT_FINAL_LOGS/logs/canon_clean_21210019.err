@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py", line 973, in <module>
+    main()
+  File "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py", line 593, in main
+    backend, backend_path = load_canonical_backend(args.canonical_backend_py)
+  File "/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/train_eval_jetclass_canonical_aspen.py", line 461, in load_canonical_backend
+    raise RuntimeError(
+RuntimeError: Could not load canonical JetClass backend. Pass --canonical_backend_py explicitly. Last error: /home/ryreu/atlas/PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py: 'NoneType' object has no attribute '__dict__'

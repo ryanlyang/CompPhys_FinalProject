@@ -1,0 +1,2 @@
+/home/ryreu/atlas/CompPhys_FinalProject/restart_studies/sbatch_train_rrr_find_another_single.sh: line 255: 3308763 Killed                  "${CMD[@]}"
+[2026-04-28T04:32:07.990] error: Detected 1 oom_kill event in StepId=21233530.batch. Some of the step tasks have been OOM Killed.

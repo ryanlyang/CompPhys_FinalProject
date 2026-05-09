@@ -1,0 +1,210 @@
+# Codex Transfer Info (Master Handoff)
+
+Last updated: 2026-04-19 (America/New_York)
+Owner: Ryan Yang
+
+## 0) How To Use This In A New Codex Chat
+
+Copy/paste this exact message as your first prompt in the new chat:
+
+"Read `/home/ryan/Documents/School/CompPhys/new_final_project/codex_transfer_info.txt` fully, treat it as authoritative project context, then continue from the `Immediate Next Actions` section. Do not re-derive already-settled details unless I ask."
+
+That is the most reliable way to transfer context between independent chats.
+
+## 1) Best Practices For Cross-Chat Context Transfer
+
+There is no perfect implicit memory transfer across separate chats. The best practical method is:
+1. One canonical handoff file (this file).
+2. A short bootstrap instruction in first message of new chat (above).
+3. Explicit file paths + concrete decisions + known findings + open questions.
+4. Optional: ask new chat to produce a verification summary before doing changes.
+
+If your platform supports "fork" chats, that is usually the highest-fidelity transfer. If you must start a fresh chat, this file is the fallback.
+
+## 2) High-Level Context From Original Thread (Before Switching To CompPhys)
+
+You were deeply iterating on JetClass HLT/offline reconstruction and joint training pipelines (teacher vs HLT baseline vs Stage2 vs StageC), mostly in `PracticeTagging`.
+
+Main goals in that thread:
+- Improve pseudo-HLT robustness/performance with offline-informed reconstruction.
+- Diagnose why joint finetuning sometimes degrades vs Stage2.
+- Move from merge-specific reconstructor behavior toward better handling of efficiency/threshold/missing constituents.
+- Explore jet-latent setups and then hybrid operations + v2 attribute heads.
+
+Important directional findings from your run logs and discussion:
+- Stage2 often improves modestly over HLT baseline.
+- StageC joint finetune sometimes slightly degrades (or is flat), likely due to optimization tradeoffs / reconstruction-classification coupling.
+- On merge-favored corruption setup, forcing full budget can help some metrics but not dramatically.
+- Budget weight changes (e.g., 0.65 vs 0.25) shifted dynamics but did not produce a massive breakthrough.
+- v2 attr setup had both an initial implementation bug and later true v2 attr runs.
+
+## 3) JetClass Dataset + Feature Mode Facts (Settled In Thread)
+
+### 3.1 What `feature_mode=full` means in your code
+In your pipeline, `full` is a curated 17-feature per-constituent input preset, not "all ROOT branches".
+
+`full` =
+1. d_eta
+2. d_phi
+3. log_pt
+4. log_e
+5. log_pt_rel
+6. log_e_rel
+7. d_r
+8. charge
+9. isChargedHadron
+10. isNeutralHadron
+11. isPhoton
+12. isElectron
+13. isMuon
+14. d0
+15. d0err
+16. dz
+17. dzerr
+
+### 3.2 Other feature presets
+- `kin` = first 7 engineered kinematic features only.
+- `kinpid` = `kin` + charge + 5 PID flags.
+- `full` = `kinpid` + d0/d0err/dz/dzerr.
+
+### 3.3 Raw branches present in JetClass ROOT files (superset)
+Observed branch union included:
+- Constituent-like: `part_px`, `part_py`, `part_pz`, `part_energy`, `part_pt`, `part_eta`, `part_phi`, `part_deta`, `part_dphi`, `part_pid`, `part_charge`, `part_isChargedHadron`, `part_isNeutralHadron`, `part_isPhoton`, `part_isElectron`, `part_isMuon`, `part_d0val`, `part_d0err`, `part_dzval`, `part_dzerr`
+- Jet-level: `jet_pt`, `jet_eta`, `jet_phi`, `jet_energy`, `jet_sdmass`, `jet_tau1`, `jet_tau2`, `jet_tau3`, `jet_tau4`, `jet_nparticles`
+- Labels: `label_QCD`, `label_Hbb`, `label_Hcc`, `label_Hgg`, `label_H4q`, `label_Hqql`, `label_Tbqq`, `label_Tbl`, `label_Wqq`, `label_Zqq`
+
+Interpretation settled in thread:
+- The ROOT files are a superset.
+- `full` is benchmark-style curated inputs for comparability and stability, not every available branch.
+
+## 4) Key Files Mentioned In Prior Work
+
+Representative scripts/modules from discussion:
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly.py`
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly_v2_attr.py`
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly_m2hlt.py`
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly_m2hlt_jetlatent_set2set.py`
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly_m2hlt_jetlatent_set2set_v2_attr.py`
+- `PracticeTagging/train_jetclass_joint_dualview_stage2_unmergeonly_m2hlt_hybrid_ops_v2_attr.py`
+- `PracticeTagging/offline_reconstructor_joint_dualview_stage2save_auc_norankc_nopriv_unmergeonly.py`
+- `PracticeTagging/offline_reconstructor_joint_dualview_stage2save_auc_norankc_nopriv_unmergeonly_jetlatent_set2set.py`
+- `PracticeTagging/offline_reconstructor_joint_dualview_stage2save_auc_norankc_nopriv_unmergeonly_hybrid_ops.py`
+- `PracticeTagging/evaluate_jetclass_hlt_teacher_baseline.py`
+
+Representative runner scripts discussed:
+- `PracticeTagging/run_train_jetclass_joint_dualview_100k50k100k_m2hlt_kin_mergefav_jetlatent_fullbudget.sh`
+- `PracticeTagging/run_train_jetclass_joint_dualview_100k50k100k_m2hlt_full_mergefav_jetlatent_v2attr_fullbudget.sh`
+- `PracticeTagging/run_train_jetclass_joint_dualview_100k50k100k_m2hlt_full_mergefav_hybridops_v2attr_budgetpt.sh`
+
+## 5) Notable Failures/Bugs Encountered (And Why Important)
+
+1. `child_weight` reshape mismatch in jetlatent run:
+- Error: shape `[96, 100, 1]` invalid for size 3072.
+- Significance: mismatch between expected generated-token tensor and split-head output format.
+
+2. `_build_hlt_view_m2style` unexpected kwarg `return_provenance`:
+- Significance: interface mismatch between HLT builder wrapper and caller expecting provenance.
+
+3. Hybrid ops soft-corrected view stack size mismatch:
+- Error when stacking `tok_weights [B,100]`, `parent_added [B,100]`, `eff_share [B,1]`.
+- Significance: broadcast/shape bug in feature assembly for stage B/C corrected view.
+
+4. Time-limit truncation during long reconstructor pretrain:
+- Several jobs reached wall time before completing later stages.
+
+## 6) Performance Pattern Summary (From Your Shared Logs)
+
+High-level trend repeatedly seen:
+- Offline teacher >> HLT baseline (expected domain/corruption gap).
+- Stage2 often gives small but real gains over HLT baseline on AUC and some FPR metrics.
+- StageC joint often flat or slightly worse than Stage2 (especially in some FPR metrics), suggesting coupled optimization tension.
+
+You consistently cared most about:
+- Signal-vs-background FPR@TPR50
+- HToBB-vs-(HToBB+ZJetsToNuNu) specific FPR@TPR50
+
+## 7) Naming Clarification Settled In Thread
+
+The second FPR metric printed as
+`fpr50(HToBB/(HToBB+ZJetsToNuNu))`
+can be referred to more compactly as:
+- `FPR50(Hbb-vs-Zνν)`
+or
+- `FPR50(HToBB-vs-ZJetsToNuNu)`
+
+## 8) New Direction (Current Workstream): Computational Physics Final Project
+
+You switched from HLT reconstruction work to Comp Phys final project implementation.
+
+Proposal read from:
+- `/home/ryan/Documents/School/CompPhys/new_final_project/CompPhys_Final_Project_Proposal-5-3.pdf`
+
+Proposal title/theme:
+- Interpretability-guided training for robust jet tagging under simulation-to-data shift.
+
+Core research question:
+- Can interpretability-guided training push transformer-based jet taggers toward more stable, physically meaningful reliance and improve JetClass -> AspenOpenJets transfer?
+
+Planned stages in proposal:
+1. Baseline transformer on JetClass.
+2. Evaluate in-domain and out-of-domain on AspenOpenJets.
+3. Attribution methods + perturbation checks.
+4. Interpretability-guided training interventions and compare robustness.
+
+## 9) Workspace / Access Notes For CompPhys Folder
+
+Target folder:
+- `/home/ryan/Documents/School/CompPhys/new_final_project/`
+
+In this chat session, writing there required escalated permissions (outside default writable roots).
+
+Write-access confirmations done:
+- Created `/home/ryan/Documents/School/CompPhys/new_final_project/.codex_write_test`
+- Created and edited `/home/ryan/Documents/School/CompPhys/new_final_project/codex_write_confirmation.txt`
+
+Accidental side file also created in old ATLAS cwd:
+- `/home/ryan/ComputerScience/ATLAS/HLT_Reco/ATLAS-top-tagging-open-data/codex_write_confirmation.txt`
+(Non-critical; can be removed if desired.)
+
+## 10) Immediate Next Actions (For New Chat)
+
+If starting implementation now, recommended sequence:
+1. Parse proposal into concrete milestones and acceptance criteria.
+2. Set project skeleton in `new_final_project/`:
+   - `README.md`
+   - `env/requirements.txt` or `environment.yml`
+   - `src/` modules for data, model, eval, explainability, training
+   - `configs/` for baseline and interventions
+   - `scripts/` for reproducible runs
+3. Implement baseline JetClass training/eval pipeline first.
+4. Add AspenOpenJets evaluation adapter (even if initial subset).
+5. Add attribution methods (input gradients, integrated gradients).
+6. Add perturbation validation experiments.
+7. Add one or two guided-training interventions first (e.g., gradient penalty + attribution masking).
+8. Build unified reporting tables + plots focused on transfer gap and robustness.
+
+## 11) Suggested Deliverable Structure For Final Project
+
+- `results/baseline/`
+- `results/attribution_checks/`
+- `results/interventions/`
+- `notebooks/` (optional analysis)
+- `report/` figures + concise findings
+
+Key comparisons to always include:
+- JetClass val/test performance
+- AspenOpenJets transfer performance
+- Sensitivity to high-attribution vs random perturbations
+- Seed-to-seed variance
+
+## 12) Transfer Integrity Checklist (Ask New Chat To Confirm)
+
+Ask the new chat to confirm these before coding:
+1. It has read this handoff file end-to-end.
+2. It understands `feature_mode` semantics (`kin`, `kinpid`, `full`).
+3. It recognizes that `full` is 17 curated features, not all ROOT branches.
+4. It will treat prior settled findings as context, not re-litigate them.
+5. It will begin from Section 10 (Immediate Next Actions).
+
+---
+End of handoff.
